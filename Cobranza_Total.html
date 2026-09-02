@@ -1,0 +1,2971 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COBRANZA TOTAL - Plataforma Inteligente</title>
+
+<!-- LIBRERÍAS -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+    --bg-grad1: #030b18;
+    --bg-grad2: #07152b;
+    --sidebar-bg: #040e1e;
+    --topbar-bg: rgba(4, 14, 30, 0.90);
+    --panel: #0a1b33;
+    --panel2: #0e2342;
+    --border: #143159;
+    --table-header: #07152b;
+    --table-border: #132a4a;
+    --table-hover: #0d203b;
+    --input-bg: #061326;
+
+    --blue: #0056ba;
+    --blue2: #003a80;
+
+    --green: #76bc21;
+    --green2: #5a9418;
+
+    --navy-badge: #02204c;
+
+    --red: #ef3340;
+    --red2: #b91c2a;
+
+    --text: #ffffff;
+    --muted: #8ba2c0;
+
+    --yellow: #f5b942;
+
+    --shadow: 0 10px 30px rgba(0,0,0,.40);
+}
+
+/* =========================================================
+   TEMA CLARO
+========================================================= */
+
+body.light-theme {
+    --bg-grad1: #f0f4f9;
+    --bg-grad2: #e2e8f0;
+    --sidebar-bg: #ffffff;
+    --topbar-bg: rgba(255,255,255,.90);
+    --panel: #ffffff;
+    --panel2: #f8fafc;
+    --border: #cbd5e1;
+    --table-header: #f1f5f9;
+    --table-border: #e2e8f0;
+    --table-hover: #f1f5f9;
+    --input-bg: #ffffff;
+
+    --text: #040e1e;
+    --muted: #64748b;
+
+    --shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+/* =========================================================
+   GENERAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(
+        135deg,
+        var(--bg-grad1),
+        var(--bg-grad2)
+    );
+    color: var(--text);
+    min-height: 100vh;
+}
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+#loginScreen {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(0,86,186,.25),
+            transparent 45%
+        ),
+        linear-gradient(
+            135deg,
+            #020817,
+            #07152b
+        );
+}
+
+.login-card {
+    width: 100%;
+    max-width: 430px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0a1b33,
+            #061326
+        );
+
+    border: 1px solid #143159;
+
+    border-radius: 20px;
+
+    padding: 35px;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.55),
+        0 0 50px rgba(0,86,186,.12);
+
+    animation: loginAppear .5s ease;
+}
+
+@keyframes loginAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================================================
+   LOGO CTP
+========================================================= */
+
+.login-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 22px;
+}
+
+.ctp-logo {
+    width: 115px;
+    height: 115px;
+
+    border-radius: 50%;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+
+    background:
+        radial-gradient(
+            circle,
+            #0b2a55 0%,
+            #061326 70%,
+            #020817 100%
+        );
+
+    border: 3px solid var(--blue);
+
+    box-shadow:
+        0 0 0 4px rgba(118,188,33,.12),
+        0 0 35px rgba(0,86,186,.40);
+}
+
+.ctp-logo::before {
+    content: "";
+
+    position: absolute;
+
+    width: 91px;
+    height: 91px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(118,188,33,.45);
+}
+
+.ctp-main {
+    font-size: 34px;
+
+    font-weight: 900;
+
+    letter-spacing: -2px;
+
+    color: #ffffff;
+
+    z-index: 2;
+}
+
+.ctp-main span {
+    color: var(--green);
+}
+
+.ctp-small {
+    font-size: 7px;
+
+    letter-spacing: 1.7px;
+
+    font-weight: 900;
+
+    color: #ffffff;
+
+    margin-top: 2px;
+
+    z-index: 2;
+}
+
+.login-card h1 {
+    text-align: center;
+
+    font-size: 24px;
+
+    font-weight: 900;
+
+    letter-spacing: .5px;
+
+    margin-bottom: 6px;
+}
+
+.login-subtitle {
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    margin-bottom: 28px;
+}
+
+/* =========================================================
+   LOGIN INPUTS
+========================================================= */
+
+.login-field {
+    margin-bottom: 17px;
+}
+
+.login-field label {
+    display: block;
+
+    font-size: 10px;
+
+    color: var(--muted);
+
+    font-weight: 800;
+
+    letter-spacing: .8px;
+
+    margin-bottom: 7px;
+}
+
+.login-input {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    background: var(--input-bg);
+
+    color: var(--text);
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    transition: .2s;
+}
+
+.login-input:focus {
+    border-color: var(--blue);
+
+    box-shadow:
+        0 0 0 3px rgba(0,86,186,.15);
+}
+
+.login-button {
+    width: 100%;
+
+    padding: 13px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--blue),
+            var(--blue2)
+        );
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: 900;
+
+    letter-spacing: .7px;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+    margin-top: 6px;
+}
+
+.login-button:hover {
+    transform: translateY(-1px);
+
+    filter: brightness(1.15);
+
+    box-shadow:
+        0 8px 25px rgba(0,86,186,.30);
+}
+
+.login-message {
+    min-height: 18px;
+
+    text-align: center;
+
+    font-size: 11px;
+
+    margin-top: 12px;
+}
+
+.login-footer {
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 9px;
+
+    margin-top: 22px;
+}
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+#dashboard {
+    display: none;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    position: fixed;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 250px;
+
+    background: var(--sidebar-bg);
+
+    border-right: 1px solid var(--border);
+
+    padding: 20px 14px;
+
+    z-index: 1000;
+
+    transition: .3s;
+}
+
+.logo-container {
+    padding: 10px 8px 20px;
+
+    border-bottom: 1px solid var(--border);
+
+    margin-bottom: 10px;
+}
+
+.logo-badge-container {
+    background:
+        radial-gradient(
+            circle,
+            #071c3a 0%,
+            #030a17 100%
+        );
+
+    border: 2px solid var(--blue);
+
+    border-radius: 50%;
+
+    width: 130px;
+    height: 130px;
+
+    margin: 0 auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-shadow:
+        0 0 20px rgba(0,86,186,.4);
+
+    position: relative;
+}
+
+.logo-title-cobranza {
+    color: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: 900;
+
+    line-height: 1;
+}
+
+.logo-title-total-wrap {
+    display: flex;
+
+    align-items: center;
+
+    gap: 2px;
+
+    margin: 2px 0;
+}
+
+.logo-check-icon {
+    color: var(--green);
+
+    stroke-width: 3.5;
+}
+
+.logo-title-total {
+    color: var(--green);
+
+    font-size: 20px;
+
+    font-weight: 900;
+
+    font-style: italic;
+}
+
+.logo-centrales-pill {
+    background: var(--navy-badge);
+
+    color: white;
+
+    font-size: 7px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.5px;
+
+    padding: 2px 8px;
+
+    border-radius: 10px;
+
+    margin: 2px 0;
+}
+
+.logo-56-wrap {
+    color: white;
+
+    font-size: 22px;
+
+    font-weight: 900;
+}
+
+.logo-56-wrap span {
+    color: var(--green);
+}
+
+/* =========================================================
+   MENU
+========================================================= */
+
+.menu-title {
+    color: var(--muted);
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    margin: 18px 10px 8px;
+}
+
+.nav-btn {
+    width: 100%;
+
+    border: 0;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    padding: 12px 13px;
+
+    border-radius: 9px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 5px;
+
+    text-align: left;
+
+    transition: .2s;
+}
+
+.nav-btn:hover {
+    background: var(--panel2);
+
+    color: var(--text);
+}
+
+.nav-btn.active {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(118,188,33,.15),
+            rgba(0,86,186,.20)
+        );
+
+    color: var(--green);
+
+    font-weight: bold;
+
+    border-left: 3px solid var(--green);
+}
+
+.sidebar-bottom {
+    position: absolute;
+
+    bottom: 20px;
+
+    left: 14px;
+
+    right: 14px;
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+    margin-left: 250px;
+
+    min-height: 100vh;
+}
+
+.topbar {
+    height: 72px;
+
+    background: var(--topbar-bg);
+
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 28px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 900;
+
+    backdrop-filter: blur(15px);
+}
+
+.page-title h2 {
+    font-size: 19px;
+}
+
+.page-title p {
+    font-size: 11px;
+
+    color: var(--muted);
+
+    margin-top: 3px;
+}
+
+.top-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.icon-btn {
+    width: 38px;
+    height: 38px;
+
+    border: 1px solid var(--border);
+
+    background: var(--panel);
+
+    color: var(--text);
+
+    border-radius: 9px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.icon-btn:hover {
+    border-color: var(--green);
+}
+
+.mobile-menu {
+    display: none;
+}
+
+.content {
+    padding: 25px;
+}
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn {
+    border: 0;
+
+    padding: 10px 15px;
+
+    border-radius: 8px;
+
+    color: #fff;
+
+    font-weight: 600;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    transition: .2s;
+}
+
+.btn-blue {
+    background:
+        linear-gradient(
+            135deg,
+            var(--blue),
+            var(--blue2)
+        );
+}
+
+.btn-green {
+    background:
+        linear-gradient(
+            135deg,
+            var(--green),
+            var(--green2)
+        );
+
+    color: #030b18;
+}
+
+.btn-red {
+    background:
+        linear-gradient(
+            135deg,
+            var(--red),
+            var(--red2)
+        );
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+
+    filter: brightness(1.1);
+}
+
+/* =========================================================
+   UPLOAD
+========================================================= */
+
+.upload-box {
+    background: var(--panel);
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    padding: 20px;
+
+    margin-bottom: 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    box-shadow: var(--shadow);
+}
+
+.upload-info {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+.upload-icon {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 12px;
+
+    background: rgba(118,188,33,.12);
+
+    color: var(--green);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.file-name {
+    font-weight: bold;
+}
+
+.file-status {
+    color: var(--muted);
+
+    font-size: 12px;
+
+    margin-top: 4px;
+}
+
+/* =========================================================
+   KPI
+========================================================= */
+
+.kpi-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.kpi {
+    background: var(--panel);
+
+    border: 1px solid var(--border);
+
+    border-radius: 13px;
+
+    padding: 19px;
+
+    box-shadow: var(--shadow);
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.kpi::after {
+    content: "";
+
+    position: absolute;
+
+    width: 90px;
+    height: 90px;
+
+    border-radius: 50%;
+
+    right: -40px;
+    top: -40px;
+
+    background:
+        rgba(118,188,33,.08);
+}
+
+.kpi.red::after {
+    background:
+        rgba(239,51,64,.08);
+}
+
+.kpi-head {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+.kpi-icon {
+    width: 36px;
+    height: 36px;
+
+    border-radius: 9px;
+
+    background:
+        rgba(118,188,33,.12);
+
+    color: var(--green);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.kpi.red .kpi-icon {
+    background:
+        rgba(239,51,64,.12);
+
+    color: var(--red);
+}
+
+.kpi-label {
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+.kpi-value {
+    font-size: 24px;
+
+    font-weight: bold;
+
+    margin-top: 5px;
+}
+
+.kpi-change {
+    font-size: 10px;
+
+    color: var(--green);
+
+    margin-top: 7px;
+}
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.card {
+    background: var(--panel);
+
+    border: 1px solid var(--border);
+
+    border-radius: 13px;
+
+    padding: 18px;
+
+    box-shadow: var(--shadow);
+}
+
+.card-title {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 17px;
+}
+
+.card-title h3 {
+    font-size: 14px;
+}
+
+.grid-2 {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 18px;
+}
+
+.chart-container {
+    height: 300px;
+
+    position: relative;
+}
+
+/* =========================================================
+   TABLES
+========================================================= */
+
+.table-wrap {
+    overflow: auto;
+
+    max-height: 520px;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 800px;
+}
+
+th {
+    background: var(--table-header);
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    padding: 12px;
+
+    text-align: left;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 2;
+}
+
+td {
+    border-top: 1px solid var(--table-border);
+
+    padding: 11px 12px;
+
+    font-size: 11px;
+}
+
+tr:hover td {
+    background: var(--table-hover);
+}
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+.setting-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 16px 0;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.switch {
+    width: 42px;
+    height: 22px;
+
+    background: #143159;
+
+    border-radius: 20px;
+
+    position: relative;
+
+    cursor: pointer;
+}
+
+.switch::after {
+    content: "";
+
+    width: 16px;
+    height: 16px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    position: absolute;
+
+    top: 3px;
+    left: 3px;
+
+    transition: left .2s;
+}
+
+.switch.on {
+    background: var(--green);
+}
+
+.switch.on::after {
+    left: 23px;
+}
+
+/* =========================================================
+   USER BADGE
+========================================================= */
+
+.user-badge {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 7px 10px;
+
+    border: 1px solid var(--border);
+
+    background: var(--panel);
+
+    border-radius: 8px;
+
+    font-size: 11px;
+
+    color: var(--muted);
+}
+
+.user-badge strong {
+    color: var(--text);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px) {
+
+    .kpi-grid {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .grid-2 {
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:800px) {
+
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    .mobile-menu {
+        display: flex;
+    }
+
+    .topbar {
+        padding: 0 15px;
+    }
+
+    .content {
+        padding: 15px;
+    }
+
+    .upload-box {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .kpi-grid {
+        grid-template-columns:1fr;
+    }
+
+    .user-badge {
+        display:none;
+    }
+}
+
+@media(max-width:500px) {
+
+    .login-card {
+        padding: 25px 20px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- =========================================================
+     LOGIN
+========================================================= -->
+
+<div id="loginScreen">
+
+    <div class="login-card">
+
+        <div class="login-logo">
+
+            <div class="ctp-logo">
+
+                <div class="ctp-main">
+                    C<span>T</span>P
+                </div>
+
+                <div class="ctp-small">
+                    COBRANZA TOTAL
+                </div>
+
+            </div>
+
+        </div>
+
+        <h1>
+            COBRANZA TOTAL
+        </h1>
+
+        <div class="login-subtitle">
+            Plataforma Inteligente de Auditoría
+        </div>
+
+
+        <div class="login-field">
+
+            <label>
+                USUARIO
+            </label>
+
+            <input
+                class="login-input"
+                type="text"
+                id="loginUser"
+                value="admin"
+                placeholder="Ingrese su usuario"
+                autocomplete="username"
+            >
+
+        </div>
+
+
+        <div class="login-field">
+
+            <label>
+                CONTRASEÑA
+            </label>
+
+            <input
+                class="login-input"
+                type="password"
+                id="loginPassword"
+                placeholder="Ingrese su contraseña"
+                autocomplete="current-password"
+            >
+
+        </div>
+
+
+        <button
+            class="login-button"
+            onclick="login()"
+        >
+            INICIAR SESIÓN
+        </button>
+
+
+        <div
+            id="loginMsg"
+            class="login-message"
+        ></div>
+
+
+        <div class="login-footer">
+            Sistema de acceso restringido · CTP
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     DASHBOARD
+========================================================= -->
+
+<div id="dashboard">
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo-container">
+
+        <div class="logo-badge-container">
+
+            <div class="logo-title-cobranza">
+                COBRANZA
+            </div>
+
+            <div class="logo-title-total-wrap">
+
+                <i
+                    data-lucide="check"
+                    class="logo-check-icon"
+                    style="width:18px;height:18px;"
+                ></i>
+
+                <div class="logo-title-total">
+                    TOTAL
+                </div>
+
+            </div>
+
+            <div class="logo-centrales-pill">
+                CENTRALES
+            </div>
+
+            <div class="logo-56-wrap">
+                56<span>+</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="menu-title">
+        Principal
+    </div>
+
+    <button
+        class="nav-btn active"
+        data-tab="inicio"
+    >
+        <i data-lucide="layout-dashboard"></i>
+        Inicio
+    </button>
+
+    <button
+        class="nav-btn"
+        data-tab="gestores"
+    >
+        <i data-lucide="users"></i>
+        Gestores
+    </button>
+
+    <button
+        class="nav-btn"
+        data-tab="zonas"
+    >
+        <i data-lucide="map"></i>
+        Zonas
+    </button>
+
+    <button
+        class="nav-btn"
+        data-tab="analisis"
+    >
+        <i data-lucide="bar-chart-3"></i>
+        Análisis
+    </button>
+
+
+    <div class="menu-title">
+        Operación
+    </div>
+
+    <button
+        class="nav-btn"
+        data-tab="registros"
+    >
+        <i data-lucide="database"></i>
+        Registros
+    </button>
+
+
+    <div class="menu-title">
+        Sistema
+    </div>
+
+    <button
+        class="nav-btn"
+        data-tab="configuracion"
+    >
+        <i data-lucide="settings"></i>
+        Configuración
+    </button>
+
+
+    <div class="sidebar-bottom">
+
+        <div
+            class="card"
+            style="padding:12px"
+        >
+
+            <div
+                style="
+                    font-size:10px;
+                    color:var(--muted)
+                "
+            >
+                ARCHIVO ACTIVO
+            </div>
+
+            <div
+                id="sidebarFile"
+                style="
+                    font-size:11px;
+                    margin-top:5px
+                "
+            >
+                Ningún archivo
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+    <header class="topbar">
+
+        <div
+            style="
+                display:flex;
+                align-items:center;
+                gap:12px
+            "
+        >
+
+            <button
+                class="icon-btn mobile-menu"
+                id="mobileMenuBtn"
+            >
+                <i data-lucide="menu"></i>
+            </button>
+
+
+            <div class="page-title">
+
+                <h2>
+                    Dashboard Ejecutivo
+                </h2>
+
+                <p>
+                    Plataforma Inteligente — Centrales 56+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="top-actions">
+
+            <div class="user-badge">
+
+                <i
+                    data-lucide="user"
+                    style="width:14px"
+                ></i>
+
+                Usuario:
+                <strong id="activeUser">
+                    admin
+                </strong>
+
+            </div>
+
+
+            <button
+                class="icon-btn"
+                onclick="switchTab('configuracion')"
+            >
+                <i data-lucide="settings"></i>
+            </button>
+
+
+            <button
+                class="btn btn-green"
+                onclick="
+                    document
+                    .getElementById('excelFile')
+                    .click()
+                "
+            >
+                <i data-lucide="upload"></i>
+                Cargar Excel
+            </button>
+
+
+            <button
+                class="btn btn-red"
+                onclick="logout()"
+            >
+                <i data-lucide="log-out"></i>
+                Salir
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <div class="content">
+
+
+        <!-- =================================================
+             UPLOAD
+        ================================================== -->
+
+        <div class="upload-box">
+
+            <div class="upload-info">
+
+                <div class="upload-icon">
+
+                    <i data-lucide="file-spreadsheet"></i>
+
+                </div>
+
+                <div>
+
+                    <div
+                        class="file-name"
+                        id="fileName"
+                    >
+                        No hay archivo cargado
+                    </div>
+
+                    <div
+                        class="file-status"
+                        id="fileStatus"
+                    >
+                        Carga tu archivo de indicadores para comenzar
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <input
+                    type="file"
+                    id="excelFile"
+                    accept=".xlsx,.xls,.csv"
+                    hidden
+                >
+
+                <button
+                    class="btn btn-blue"
+                    onclick="
+                        document
+                        .getElementById('excelFile')
+                        .click()
+                    "
+                >
+
+                    <i data-lucide="folder-open"></i>
+
+                    Seleccionar archivo
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             INICIO
+        ================================================== -->
+
+        <section
+            class="tab active"
+            id="tab-inicio"
+        >
+
+            <div class="kpi-grid">
+
+                <div class="kpi">
+
+                    <div class="kpi-head">
+
+                        <div>
+
+                            <div class="kpi-label">
+                                COBRANZA TOTAL
+                            </div>
+
+                            <div
+                                class="kpi-value"
+                                id="kpiTotal"
+                            >
+                                $0.00
+                            </div>
+
+                        </div>
+
+                        <div class="kpi-icon">
+                            <i data-lucide="wallet"></i>
+                        </div>
+
+                    </div>
+
+                    <div class="kpi-change">
+                        ● Recaudación acumulada
+                    </div>
+
+                </div>
+
+
+                <div class="kpi red">
+
+                    <div class="kpi-head">
+
+                        <div>
+
+                            <div class="kpi-label">
+                                TOTAL COMISIONES
+                            </div>
+
+                            <div
+                                class="kpi-value"
+                                id="kpiCommission"
+                            >
+                                $0.00
+                            </div>
+
+                        </div>
+
+                        <div class="kpi-icon">
+                            <i data-lucide="badge-dollar-sign"></i>
+                        </div>
+
+                    </div>
+
+                    <div class="kpi-change">
+                        Monto total comisionado
+                    </div>
+
+                </div>
+
+
+                <div class="kpi">
+
+                    <div class="kpi-head">
+
+                        <div>
+
+                            <div class="kpi-label">
+                                TRANSACCIONES
+                            </div>
+
+                            <div
+                                class="kpi-value"
+                                id="kpiTransactions"
+                            >
+                                0
+                            </div>
+
+                        </div>
+
+                        <div class="kpi-icon">
+                            <i data-lucide="receipt"></i>
+                        </div>
+
+                    </div>
+
+                    <div class="kpi-change">
+                        Pagos registrados
+                    </div>
+
+                </div>
+
+
+                <div class="kpi red">
+
+                    <div class="kpi-head">
+
+                        <div>
+
+                            <div class="kpi-label">
+                                TICKET PROMEDIO
+                            </div>
+
+                            <div
+                                class="kpi-value"
+                                id="kpiAverage"
+                            >
+                                $0.00
+                            </div>
+
+                        </div>
+
+                        <div class="kpi-icon">
+                            <i data-lucide="trending-up"></i>
+                        </div>
+
+                    </div>
+
+                    <div class="kpi-change">
+                        Promedio por pago
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="grid-2">
+
+                <div class="card">
+
+                    <div class="card-title">
+
+                        <h3>
+                            Recaudación por Zona
+                        </h3>
+
+                        <span>
+                            Distribución
+                        </span>
+
+                    </div>
+
+                    <div class="chart-container">
+
+                        <canvas id="zoneChart"></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-title">
+
+                        <h3>
+                            Top 5 Gestores
+                        </h3>
+
+                        <span>
+                            Por Cobranza Total
+                        </span>
+
+                    </div>
+
+                    <div class="chart-container">
+
+                        <canvas id="managerChart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             GESTORES
+        ================================================== -->
+
+        <section
+            class="tab"
+            id="tab-gestores"
+        >
+
+            <div class="card">
+
+                <div class="card-title">
+
+                    <h3>
+                        Rendimiento de Gestores
+                    </h3>
+
+                </div>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>#</th>
+                                <th>Gestor</th>
+                                <th>Operaciones</th>
+                                <th>Cobranza Total</th>
+                                <th>Comisión Total</th>
+                                <th>Ticket Promedio</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="gestoresBody"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ZONAS
+        ================================================== -->
+
+        <section
+            class="tab"
+            id="tab-zonas"
+        >
+
+            <div class="card">
+
+                <div class="card-title">
+
+                    <h3>
+                        Detalle por Zonas
+                    </h3>
+
+                </div>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Zona</th>
+                                <th>Operaciones</th>
+                                <th>Cobranza Total</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="zonesBody"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ANALISIS
+        ================================================== -->
+
+        <section
+            class="tab"
+            id="tab-analisis"
+        >
+
+            <div class="card">
+
+                <div class="card-title">
+
+                    <h3>
+                        Análisis Operativo
+                    </h3>
+
+                </div>
+
+                <p
+                    style="
+                        color:var(--muted);
+                        font-size:12px;
+                    "
+                >
+                    El análisis gráfico detallado se habilita al cargar el archivo de indicadores.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             REGISTROS
+        ================================================== -->
+
+        <section
+            class="tab"
+            id="tab-registros"
+        >
+
+            <div class="card">
+
+                <div class="card-title">
+
+                    <h3>
+                        Registros de Pagos
+                    </h3>
+
+                    <span id="recordCount">
+                        0 registros
+                    </span>
+
+                </div>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Cliente Único</th>
+                                <th>Gestor</th>
+                                <th>Zona</th>
+                                <th>Cobranza Total</th>
+                                <th>Comisión</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="recordsBody"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CONFIGURACION
+        ================================================== -->
+
+        <section
+            class="tab"
+            id="tab-configuracion"
+        >
+
+            <div class="card">
+
+                <div class="card-title">
+
+                    <h3>
+                        Configuración del Sistema
+                    </h3>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <h4 style="font-size:12px">
+                            Modo Oscuro / Claro
+                        </h4>
+
+                        <p
+                            style="
+                                font-size:10px;
+                                color:var(--muted)
+                            "
+                        >
+                            Cambia la apariencia visual de la plataforma.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="switch"
+                        id="themeToggle"
+                        onclick="toggleTheme()"
+                    ></div>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <h4 style="font-size:12px">
+                            Sesión actual
+                        </h4>
+
+                        <p
+                            style="
+                                font-size:10px;
+                                color:var(--muted)
+                            "
+                        >
+                            Usuario conectado actualmente.
+                        </p>
+
+                    </div>
+
+                    <strong id="configUser">
+                        admin
+                    </strong>
+
+                </div>
+
+
+                <div
+                    style="
+                        margin-top:20px;
+                        padding-top:10px
+                    "
+                >
+
+                    <button
+                        class="btn btn-red"
+                        onclick="logout()"
+                    >
+
+                        <i data-lucide="log-out"></i>
+
+                        Cerrar sesión
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+</main>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   CREDENCIALES
+========================================================= */
+
+const CREDENTIALS = {
+
+    username: "admin",
+
+    password: "Admin2026!"
+
+};
+
+
+/* =========================================================
+   VARIABLES DEL DASHBOARD
+========================================================= */
+
+let rawData = [];
+
+let charts = {};
+
+let currentUser = "";
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+function login() {
+
+    const user =
+        document
+        .getElementById("loginUser")
+        .value
+        .trim();
+
+    const pass =
+        document
+        .getElementById("loginPassword")
+        .value;
+
+    const msg =
+        document
+        .getElementById("loginMsg");
+
+
+    msg.style.color = "";
+
+
+    if (!user || !pass) {
+
+        msg.style.color = "var(--red)";
+
+        msg.innerText =
+            "Complete usuario y contraseña.";
+
+        return;
+
+    }
+
+
+    if (
+        user === CREDENTIALS.username &&
+        pass === CREDENTIALS.password
+    ) {
+
+        currentUser = user;
+
+
+        document
+            .getElementById("activeUser")
+            .innerText = user;
+
+
+        document
+            .getElementById("configUser")
+            .innerText = user;
+
+
+        document
+            .getElementById("loginScreen")
+            .style.display = "none";
+
+
+        document
+            .getElementById("dashboard")
+            .style.display = "block";
+
+
+        msg.innerText = "";
+
+
+        lucide.createIcons();
+
+    }
+
+    else {
+
+        msg.style.color = "#ef3340";
+
+        msg.innerText =
+            "Usuario o contraseña incorrectos.";
+
+        document
+            .getElementById("loginPassword")
+            .value = "";
+
+    }
+
+}
+
+
+/* =========================================================
+   ENTER PARA LOGIN
+========================================================= */
+
+document
+    .getElementById("loginPassword")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                login();
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   CERRAR SESION
+========================================================= */
+
+function logout() {
+
+    currentUser = "";
+
+
+    document
+        .getElementById("dashboard")
+        .style.display = "none";
+
+
+    document
+        .getElementById("loginScreen")
+        .style.display = "flex";
+
+
+    document
+        .getElementById("loginPassword")
+        .value = "";
+
+
+    document
+        .getElementById("loginMsg")
+        .innerText = "";
+
+
+    switchTab("inicio");
+
+}
+
+
+/* =========================================================
+   TEMA
+========================================================= */
+
+function toggleTheme() {
+
+    const body =
+        document.body;
+
+    const switchBtn =
+        document.getElementById(
+            "themeToggle"
+        );
+
+
+    body.classList.toggle(
+        "light-theme"
+    );
+
+
+    switchBtn.classList.toggle(
+        "on"
+    );
+
+}
+
+
+/* =========================================================
+   NAVEGACION
+========================================================= */
+
+const navButtons =
+    document.querySelectorAll(
+        ".nav-btn"
+    );
+
+const tabs =
+    document.querySelectorAll(
+        ".tab"
+    );
+
+
+function switchTab(tabId) {
+
+    navButtons.forEach(
+        btn => {
+
+            btn.classList.toggle(
+                "active",
+                btn.dataset.tab === tabId
+            );
+
+        }
+    );
+
+
+    tabs.forEach(
+        tab => {
+
+            tab.classList.toggle(
+                "active",
+                tab.id === `tab-${tabId}`
+            );
+
+        }
+    );
+
+
+    document
+        .getElementById("sidebar")
+        ?.classList.remove("open");
+
+}
+
+
+navButtons.forEach(
+    btn => {
+
+        btn.addEventListener(
+            "click",
+            () =>
+                switchTab(
+                    btn.dataset.tab
+                )
+        );
+
+    }
+);
+
+
+/* =========================================================
+   MENU MOVIL
+========================================================= */
+
+document
+    .getElementById("mobileMenuBtn")
+    ?.addEventListener(
+        "click",
+        () => {
+
+            document
+                .getElementById("sidebar")
+                .classList
+                .toggle("open");
+
+        }
+    );
+
+
+/* =========================================================
+   EXCEL
+========================================================= */
+
+document
+    .getElementById("excelFile")
+    ?.addEventListener(
+        "change",
+        function(e) {
+
+            const file =
+                e.target.files[0];
+
+
+            if (!file) return;
+
+
+            document
+                .getElementById("fileName")
+                .innerText =
+                    file.name;
+
+
+            document
+                .getElementById("sidebarFile")
+                .innerText =
+                    file.name;
+
+
+            document
+                .getElementById("fileStatus")
+                .innerText =
+                    "Leyendo datos del Excel...";
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function(evt) {
+
+                    try {
+
+                        const data =
+                            new Uint8Array(
+                                evt.target.result
+                            );
+
+
+                        const workbook =
+                            XLSX.read(
+                                data,
+                                {
+                                    type: "array"
+                                }
+                            );
+
+
+                        const sheetName =
+                            workbook.SheetNames
+                            .includes("PAGOS")
+                            ? "PAGOS"
+                            : workbook.SheetNames[0];
+
+
+                        const worksheet =
+                            workbook.Sheets[
+                                sheetName
+                            ];
+
+
+                        rawData =
+                            XLSX.utils
+                            .sheet_to_json(
+                                worksheet
+                            );
+
+
+                        document
+                            .getElementById(
+                                "fileStatus"
+                            )
+                            .innerText =
+                                `Éxito: ${rawData.length.toLocaleString("es-MX")} registros cargados desde la hoja '${sheetName}'.`;
+
+
+                        processData(
+                            rawData
+                        );
+
+                    }
+
+                    catch(err) {
+
+                        console.error(err);
+
+                        alert(
+                            "Error al leer el archivo Excel."
+                        );
+
+
+                        document
+                            .getElementById(
+                                "fileStatus"
+                            )
+                            .innerText =
+                                "Error en el formato del archivo.";
+
+                    }
+
+                };
+
+
+            reader.readAsArrayBuffer(
+                file
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   PROCESAR DATOS
+========================================================= */
+
+function processData(data) {
+
+    let totalRecaudado = 0;
+
+    let totalComision = 0;
+
+    let gestoresMap = {};
+
+    let zonasMap = {};
+
+
+    data.forEach(row => {
+
+        const monto =
+            parseFloat(
+                row.Cobranza_Total ||
+                row.Monto_Pagado ||
+                row.Monto ||
+                row.MONTO ||
+                0
+            ) || 0;
+
+
+        const comision =
+            parseFloat(
+                row.Monto_Comision ||
+                row.Comision ||
+                0
+            ) || 0;
+
+
+        const gestor =
+            row.Gestor ||
+            row.GESTOR ||
+            row.ID_Empleado ||
+            "SIN ASIGNAR";
+
+
+        const zona =
+            row.Zona ||
+            row.ZONA ||
+            row.Territorio ||
+            "GENERAL";
+
+
+        totalRecaudado += monto;
+
+        totalComision += comision;
+
+
+        if (!gestoresMap[gestor]) {
+
+            gestoresMap[gestor] = {
+
+                count: 0,
+
+                total: 0,
+
+                comision: 0
+
+            };
+
+        }
+
+
+        gestoresMap[gestor].count++;
+
+        gestoresMap[gestor].total += monto;
+
+        gestoresMap[gestor].comision += comision;
+
+
+        if (!zonasMap[zona]) {
+
+            zonasMap[zona] = {
+
+                count: 0,
+
+                total: 0
+
+            };
+
+        }
+
+
+        zonasMap[zona].count++;
+
+        zonasMap[zona].total += monto;
+
+    });
+
+
+    document
+        .getElementById("kpiTotal")
+        .innerText =
+            `$${totalRecaudado.toLocaleString(
+                "es-MX",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            )}`;
+
+
+    document
+        .getElementById("kpiCommission")
+        .innerText =
+            `$${totalComision.toLocaleString(
+                "es-MX",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            )}`;
+
+
+    document
+        .getElementById("kpiTransactions")
+        .innerText =
+            data.length.toLocaleString(
+                "es-MX"
+            );
+
+
+    document
+        .getElementById("kpiAverage")
+        .innerText =
+            `$${(
+                data.length
+                ? totalRecaudado / data.length
+                : 0
+            ).toLocaleString(
+                "es-MX",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            )}`;
+
+
+    renderCharts(
+        zonasMap,
+        gestoresMap
+    );
+
+
+    renderTables(
+        data,
+        gestoresMap,
+        zonasMap
+    );
+
+}
+
+
+/* =========================================================
+   GRAFICAS
+========================================================= */
+
+function renderCharts(
+    zonas,
+    gestores
+) {
+
+    const zoneCanvas =
+        document
+        .getElementById("zoneChart")
+        .getContext("2d");
+
+
+    if (charts.zone)
+        charts.zone.destroy();
+
+
+    charts.zone =
+        new Chart(
+            zoneCanvas,
+            {
+
+                type: "doughnut",
+
+                data: {
+
+                    labels:
+                        Object.keys(zonas),
+
+                    datasets: [{
+
+                        data:
+                            Object.values(zonas)
+                            .map(
+                                z => z.total
+                            ),
+
+                        backgroundColor: [
+                            "#0056ba",
+                            "#76bc21",
+                            "#ef3340",
+                            "#f5b942",
+                            "#8ba2c0",
+                            "#02204c",
+                            "#26a69a"
+                        ]
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false
+
+                }
+
+            }
+        );
+
+
+    const managerCanvas =
+        document
+        .getElementById("managerChart")
+        .getContext("2d");
+
+
+    if (charts.manager)
+        charts.manager.destroy();
+
+
+    const sortedGestores =
+        Object.entries(gestores)
+        .sort(
+            (a,b) =>
+                b[1].total -
+                a[1].total
+        )
+        .slice(0,5);
+
+
+    charts.manager =
+        new Chart(
+            managerCanvas,
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels:
+                        sortedGestores
+                        .map(
+                            g => g[0]
+                        ),
+
+                    datasets: [{
+
+                        label:
+                            "Cobranza Total ($)",
+
+                        data:
+                            sortedGestores
+                            .map(
+                                g =>
+                                    g[1].total
+                            ),
+
+                        backgroundColor:
+                            "#76bc21"
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false
+
+                }
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   TABLAS
+========================================================= */
+
+function renderTables(
+    data,
+    gestores,
+    zonas
+) {
+
+    const gestoresBody =
+        document
+        .getElementById(
+            "gestoresBody"
+        );
+
+
+    gestoresBody.innerHTML = "";
+
+
+    Object.entries(gestores)
+
+        .sort(
+            (a,b) =>
+                b[1].total -
+                a[1].total
+        )
+
+        .forEach(
+            ([name,val],idx) => {
+
+                gestoresBody.innerHTML += `
+
+                    <tr>
+
+                        <td>
+                            ${idx + 1}
+                        </td>
+
+                        <td>
+                            <b>${name}</b>
+                        </td>
+
+                        <td>
+                            ${val.count.toLocaleString("es-MX")}
+                        </td>
+
+                        <td>
+                            $${val.total.toLocaleString(
+                                "es-MX",
+                                {
+                                    minimumFractionDigits:2
+                                }
+                            )}
+                        </td>
+
+                        <td>
+                            $${val.comision.toLocaleString(
+                                "es-MX",
+                                {
+                                    minimumFractionDigits:2
+                                }
+                            )}
+                        </td>
+
+                        <td>
+                            $${(
+                                val.total /
+                                val.count
+                            ).toLocaleString(
+                                "es-MX",
+                                {
+                                    minimumFractionDigits:2
+                                }
+                            )}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+
+    const zonesBody =
+        document
+        .getElementById(
+            "zonesBody"
+        );
+
+
+    zonesBody.innerHTML = "";
+
+
+    Object.entries(zonas)
+
+        .sort(
+            (a,b) =>
+                b[1].total -
+                a[1].total
+        )
+
+        .forEach(
+            ([name,val]) => {
+
+                zonesBody.innerHTML += `
+
+                    <tr>
+
+                        <td>
+                            <b>${name}</b>
+                        </td>
+
+                        <td>
+                            ${val.count.toLocaleString("es-MX")}
+                        </td>
+
+                        <td>
+                            $${val.total.toLocaleString(
+                                "es-MX",
+                                {
+                                    minimumFractionDigits:2
+                                }
+                            )}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+
+    const recordsBody =
+        document
+        .getElementById(
+            "recordsBody"
+        );
+
+
+    recordsBody.innerHTML = "";
+
+
+    document
+        .getElementById(
+            "recordCount"
+        )
+        .innerText =
+            `${data.length.toLocaleString(
+                "es-MX"
+            )} registros`;
+
+
+    data
+        .slice(0,100)
+        .forEach(
+            row => {
+
+                const cliente =
+                    row.Cliente_Unico ||
+                    row.Cliente ||
+                    row.ID ||
+                    "N/A";
+
+
+                const gestor =
+                    row.Gestor ||
+                    row.GESTOR ||
+                    "N/A";
+
+
+                const zona =
+                    row.Zona ||
+                    row.ZONA ||
+                    "N/A";
+
+
+                const monto =
+                    parseFloat(
+                        row.Cobranza_Total ||
+                        row.Monto_Pagado ||
+                        0
+                    ) || 0;
+
+
+                const comision =
+                    parseFloat(
+                        row.Monto_Comision ||
+                        0
+                    ) || 0;
+
+
+                recordsBody.innerHTML += `
+
+                    <tr>
+
+                        <td>
+                            ${cliente}
+                        </td>
+
+                        <td>
+                            ${gestor}
+                        </td>
+
+                        <td>
+                            ${zona}
+                        </td>
+
+                        <td>
+                            $${monto.toLocaleString(
+                                "es-MX",
+                                {
+                                    minimumFractionDigits:2
+                                }
+                            )}
+                        </td>
+
+                        <td>
+                            $${comision.toLocaleString(
+                                "es-MX",
+                                {
+                                    minimumFractionDigits:2
+                                }
+                            )}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   ICONOS
+========================================================= */
+
+lucide.createIcons();
+
+</script>
+
+</body>
+</html>
