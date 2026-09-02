@@ -3,19 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>COBRANZA TOTAL - Plataforma Inteligente</title>
+<title>COBRANZA TOTAL - Plataforma Inteligente de Auditoría</title>
 
-<!-- LIBRERÍAS -->
+<!-- LIBRERÍAS EXTERNAS -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
-
 /* =========================================================
-   VARIABLES
+   VARIABLES & ESTILOS BASE
 ========================================================= */
-
 :root {
     --bg-grad1: #030b18;
     --bg-grad2: #07152b;
@@ -28,29 +26,17 @@
     --table-border: #132a4a;
     --table-hover: #0d203b;
     --input-bg: #061326;
-
     --blue: #0056ba;
     --blue2: #003a80;
-
     --green: #76bc21;
     --green2: #5a9418;
-
     --navy-badge: #02204c;
-
     --red: #ef3340;
     --red2: #b91c2a;
-
     --text: #ffffff;
     --muted: #8ba2c0;
-
-    --yellow: #f5b942;
-
     --shadow: 0 10px 30px rgba(0,0,0,.40);
 }
-
-/* =========================================================
-   TEMA CLARO
-========================================================= */
 
 body.light-theme {
     --bg-grad1: #f0f4f9;
@@ -64,2908 +50,851 @@ body.light-theme {
     --table-border: #e2e8f0;
     --table-hover: #f1f5f9;
     --input-bg: #ffffff;
-
     --text: #040e1e;
     --muted: #64748b;
-
     --shadow: 0 10px 25px rgba(0,0,0,.08);
 }
 
-/* =========================================================
-   GENERAL
-========================================================= */
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
 }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(
-        135deg,
-        var(--bg-grad1),
-        var(--bg-grad2)
-    );
-    color: var(--text);
-    min-height: 100vh;
+body { 
+    font-family: Arial, Helvetica, sans-serif; 
+    background: linear-gradient(135deg, var(--bg-grad1), var(--bg-grad2)); 
+    color: var(--text); 
+    min-height: 100vh; 
 }
 
 /* =========================================================
-   LOGIN
+   PANTALLA DE LOGIN
 ========================================================= */
-
-#loginScreen {
-    min-height: 100vh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 20px;
-
-    background:
-        radial-gradient(
-            circle at 50% 0%,
-            rgba(0,86,186,.25),
-            transparent 45%
-        ),
-        linear-gradient(
-            135deg,
-            #020817,
-            #07152b
-        );
+#loginScreen { 
+    min-height: 100vh; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 20px; 
+    background: radial-gradient(circle at 50% 0%, rgba(0,86,186,.25), transparent 45%), linear-gradient(135deg, #020817, #07152b); 
 }
 
-.login-card {
-    width: 100%;
-    max-width: 430px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #0a1b33,
-            #061326
-        );
-
-    border: 1px solid #143159;
-
-    border-radius: 20px;
-
-    padding: 35px;
-
-    box-shadow:
-        0 25px 70px rgba(0,0,0,.55),
-        0 0 50px rgba(0,86,186,.12);
-
-    animation: loginAppear .5s ease;
+.login-card { 
+    width: 100%; 
+    max-width: 430px; 
+    background: linear-gradient(145deg, #0a1b33, #061326); 
+    border: 1px solid #143159; 
+    border-radius: 20px; 
+    padding: 35px; 
+    box-shadow: 0 25px 70px rgba(0,0,0,.55); 
 }
 
-@keyframes loginAppear {
+.login-logo { 
+    display: flex; 
+    justify-content: center; 
+    margin-bottom: 22px; 
+}
 
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
+.ctp-logo { 
+    width: 115px; 
+    height: 115px; 
+    border-radius: 50%; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    position: relative; 
+    background: radial-gradient(circle, #0b2a55 0%, #061326 70%, #020817 100%); 
+    border: 3px solid var(--blue); 
+}
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.ctp-main { 
+    font-size: 34px; 
+    font-weight: 900; 
+    color: #fff; 
+}
+
+.ctp-main span { 
+    color: var(--green); 
+}
+
+.ctp-small { 
+    font-size: 7px; 
+    letter-spacing: 1.7px; 
+    font-weight: 900; 
+    color: #fff; 
+}
+
+.login-card h1 { 
+    text-align: center; 
+    font-size: 24px; 
+    font-weight: 900; 
+}
+
+.login-subtitle { 
+    text-align: center; 
+    color: var(--muted); 
+    font-size: 12px; 
+    margin-bottom: 28px; 
+}
+
+.login-field { 
+    margin-bottom: 17px; 
+}
+
+.login-field label { 
+    display: block; 
+    font-size: 10px; 
+    color: var(--muted); 
+    font-weight: 800; 
+    margin-bottom: 7px; 
+}
+
+.login-input, .filter-input { 
+    width: 100%; 
+    padding: 11px 14px; 
+    background: var(--input-bg); 
+    color: var(--text); 
+    border: 1px solid var(--border); 
+    border-radius: 9px; 
+    outline: none; 
+    font-size: 13px; 
+}
+
+.login-button { 
+    width: 100%; 
+    padding: 13px; 
+    border: 0; 
+    border-radius: 9px; 
+    background: linear-gradient(135deg, var(--blue), var(--blue2)); 
+    color: white; 
+    font-size: 13px; 
+    font-weight: 900; 
+    cursor: pointer; 
 }
 
 /* =========================================================
-   LOGO CTP
+   ESTRUCTURA PRINCIPAL Y SIDEBAR
 ========================================================= */
-
-.login-logo {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 22px;
+#dashboard { 
+    display: none; 
 }
 
-.ctp-logo {
-    width: 115px;
-    height: 115px;
-
-    border-radius: 50%;
-
-    display: flex;
-    flex-direction: column;
-
-    justify-content: center;
-    align-items: center;
-
-    position: relative;
-
-    background:
-        radial-gradient(
-            circle,
-            #0b2a55 0%,
-            #061326 70%,
-            #020817 100%
-        );
-
-    border: 3px solid var(--blue);
-
-    box-shadow:
-        0 0 0 4px rgba(118,188,33,.12),
-        0 0 35px rgba(0,86,186,.40);
+.sidebar { 
+    position: fixed; 
+    left: 0; 
+    top: 0; 
+    bottom: 0; 
+    width: 250px; 
+    background: var(--sidebar-bg); 
+    border-right: 1px solid var(--border); 
+    padding: 20px 14px; 
+    z-index: 1000; 
 }
 
-.ctp-logo::before {
-    content: "";
-
-    position: absolute;
-
-    width: 91px;
-    height: 91px;
-
-    border-radius: 50%;
-
-    border: 1px solid rgba(118,188,33,.45);
+.logo-container { 
+    padding: 10px 8px 20px; 
+    border-bottom: 1px solid var(--border); 
+    margin-bottom: 10px; 
 }
 
-.ctp-main {
-    font-size: 34px;
-
-    font-weight: 900;
-
-    letter-spacing: -2px;
-
-    color: #ffffff;
-
-    z-index: 2;
+.logo-badge-container { 
+    background: radial-gradient(circle, #071c3a 0%, #030a17 100%); 
+    border: 2px solid var(--blue); 
+    border-radius: 50%; 
+    width: 120px; 
+    height: 120px; 
+    margin: 0 auto; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
 }
 
-.ctp-main span {
-    color: var(--green);
+.logo-title-cobranza { 
+    color: #fff; 
+    font-size: 12px; 
+    font-weight: 900; 
 }
 
-.ctp-small {
-    font-size: 7px;
-
-    letter-spacing: 1.7px;
-
-    font-weight: 900;
-
-    color: #ffffff;
-
-    margin-top: 2px;
-
-    z-index: 2;
+.logo-title-total { 
+    color: var(--green); 
+    font-size: 18px; 
+    font-weight: 900; 
+    font-style: italic; 
 }
 
-.login-card h1 {
-    text-align: center;
-
-    font-size: 24px;
-
-    font-weight: 900;
-
-    letter-spacing: .5px;
-
-    margin-bottom: 6px;
+.menu-title { 
+    color: var(--muted); 
+    font-size: 10px; 
+    text-transform: uppercase; 
+    margin: 18px 10px 8px; 
 }
 
-.login-subtitle {
-    text-align: center;
+.nav-btn { 
+    width: 100%; 
+    border: 0; 
+    background: transparent; 
+    color: var(--muted); 
+    padding: 12px 13px; 
+    border-radius: 9px; 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    margin-bottom: 5px; 
+    text-align: left; 
+    cursor: pointer; 
+}
 
-    color: var(--muted);
-
-    font-size: 12px;
-
-    margin-bottom: 28px;
+.nav-btn.active { 
+    background: linear-gradient(90deg, rgba(118,188,33,.15), rgba(0,86,186,.20)); 
+    color: var(--green); 
+    font-weight: bold; 
+    border-left: 3px solid var(--green); 
 }
 
 /* =========================================================
-   LOGIN INPUTS
+   ÁREA DE CONTENIDO Y TOPBAR
 ========================================================= */
-
-.login-field {
-    margin-bottom: 17px;
+.main { 
+    margin-left: 250px; 
+    min-height: 100vh; 
 }
 
-.login-field label {
-    display: block;
-
-    font-size: 10px;
-
-    color: var(--muted);
-
-    font-weight: 800;
-
-    letter-spacing: .8px;
-
-    margin-bottom: 7px;
+.topbar { 
+    height: 72px; 
+    background: var(--topbar-bg); 
+    border-bottom: 1px solid var(--border); 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 0 28px; 
+    position: sticky; 
+    top: 0; 
+    z-index: 900; 
+    backdrop-filter: blur(15px); 
 }
 
-.login-input {
-    width: 100%;
-
-    padding: 13px 14px;
-
-    background: var(--input-bg);
-
-    color: var(--text);
-
-    border: 1px solid var(--border);
-
-    border-radius: 9px;
-
-    outline: none;
-
-    font-size: 14px;
-
-    transition: .2s;
+.top-actions { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
 }
 
-.login-input:focus {
-    border-color: var(--blue);
-
-    box-shadow:
-        0 0 0 3px rgba(0,86,186,.15);
-}
-
-.login-button {
-    width: 100%;
-
-    padding: 13px;
-
-    border: 0;
-
-    border-radius: 9px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--blue),
-            var(--blue2)
-        );
-
-    color: white;
-
-    font-size: 13px;
-
-    font-weight: 900;
-
-    letter-spacing: .7px;
-
-    cursor: pointer;
-
-    transition: .2s;
-
-    margin-top: 6px;
-}
-
-.login-button:hover {
-    transform: translateY(-1px);
-
-    filter: brightness(1.15);
-
-    box-shadow:
-        0 8px 25px rgba(0,86,186,.30);
-}
-
-.login-message {
-    min-height: 18px;
-
-    text-align: center;
-
-    font-size: 11px;
-
-    margin-top: 12px;
-}
-
-.login-footer {
-    text-align: center;
-
-    color: #64748b;
-
-    font-size: 9px;
-
-    margin-top: 22px;
+.content { 
+    padding: 25px; 
 }
 
 /* =========================================================
-   DASHBOARD
+   FILTROS Y CONTROLES
 ========================================================= */
-
-#dashboard {
-    display: none;
+.filter-bar { 
+    background: var(--panel); 
+    border: 1px solid var(--border); 
+    border-radius: 13px; 
+    padding: 15px; 
+    margin-bottom: 20px; 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 15px; 
 }
 
-button,
-input,
-select {
-    font-family: inherit;
-    color: inherit;
+.filter-group { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 5px; 
 }
 
-button {
-    cursor: pointer;
+.filter-group label { 
+    font-size: 11px; 
+    color: var(--muted); 
+    font-weight: bold; 
 }
 
 /* =========================================================
-   SIDEBAR
+   TARJETAS, KPIS Y TABLAS
 ========================================================= */
-
-.sidebar {
-    position: fixed;
-
-    left: 0;
-    top: 0;
-    bottom: 0;
-
-    width: 250px;
-
-    background: var(--sidebar-bg);
-
-    border-right: 1px solid var(--border);
-
-    padding: 20px 14px;
-
-    z-index: 1000;
-
-    transition: .3s;
-}
-
-.logo-container {
-    padding: 10px 8px 20px;
-
-    border-bottom: 1px solid var(--border);
-
-    margin-bottom: 10px;
-}
-
-.logo-badge-container {
-    background:
-        radial-gradient(
-            circle,
-            #071c3a 0%,
-            #030a17 100%
-        );
-
-    border: 2px solid var(--blue);
-
-    border-radius: 50%;
-
-    width: 130px;
-    height: 130px;
-
-    margin: 0 auto;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    box-shadow:
-        0 0 20px rgba(0,86,186,.4);
-
-    position: relative;
-}
-
-.logo-title-cobranza {
-    color: #ffffff;
-
-    font-size: 13px;
-
-    font-weight: 900;
-
-    line-height: 1;
-}
-
-.logo-title-total-wrap {
-    display: flex;
-
-    align-items: center;
-
-    gap: 2px;
-
-    margin: 2px 0;
-}
-
-.logo-check-icon {
-    color: var(--green);
-
-    stroke-width: 3.5;
-}
-
-.logo-title-total {
-    color: var(--green);
-
-    font-size: 20px;
-
-    font-weight: 900;
-
-    font-style: italic;
-}
-
-.logo-centrales-pill {
-    background: var(--navy-badge);
-
-    color: white;
-
-    font-size: 7px;
-
-    font-weight: bold;
-
-    letter-spacing: 1.5px;
-
-    padding: 2px 8px;
-
-    border-radius: 10px;
-
-    margin: 2px 0;
-}
-
-.logo-56-wrap {
-    color: white;
-
-    font-size: 22px;
-
-    font-weight: 900;
-}
-
-.logo-56-wrap span {
-    color: var(--green);
-}
-
-/* =========================================================
-   MENU
-========================================================= */
-
-.menu-title {
-    color: var(--muted);
-
-    font-size: 10px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1px;
-
-    margin: 18px 10px 8px;
-}
-
-.nav-btn {
-    width: 100%;
-
-    border: 0;
-
-    background: transparent;
-
-    color: var(--muted);
-
-    padding: 12px 13px;
-
-    border-radius: 9px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    margin-bottom: 5px;
-
-    text-align: left;
-
-    transition: .2s;
-}
-
-.nav-btn:hover {
-    background: var(--panel2);
-
-    color: var(--text);
-}
-
-.nav-btn.active {
-    background:
-        linear-gradient(
-            90deg,
-            rgba(118,188,33,.15),
-            rgba(0,86,186,.20)
-        );
-
-    color: var(--green);
-
-    font-weight: bold;
-
-    border-left: 3px solid var(--green);
-}
-
-.sidebar-bottom {
-    position: absolute;
-
-    bottom: 20px;
-
-    left: 14px;
-
-    right: 14px;
-}
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-.main {
-    margin-left: 250px;
-
-    min-height: 100vh;
-}
-
-.topbar {
-    height: 72px;
-
-    background: var(--topbar-bg);
-
-    border-bottom: 1px solid var(--border);
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding: 0 28px;
-
-    position: sticky;
-
-    top: 0;
-
-    z-index: 900;
-
-    backdrop-filter: blur(15px);
-}
-
-.page-title h2 {
-    font-size: 19px;
-}
-
-.page-title p {
-    font-size: 11px;
-
-    color: var(--muted);
-
-    margin-top: 3px;
-}
-
-.top-actions {
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-}
-
-.icon-btn {
-    width: 38px;
-    height: 38px;
-
-    border: 1px solid var(--border);
-
-    background: var(--panel);
-
-    color: var(--text);
-
-    border-radius: 9px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-}
-
-.icon-btn:hover {
-    border-color: var(--green);
-}
-
-.mobile-menu {
-    display: none;
-}
-
-.content {
-    padding: 25px;
-}
-
-/* =========================================================
-   TABS
-========================================================= */
-
-.tab {
-    display: none;
-}
-
-.tab.active {
-    display: block;
-}
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.btn {
-    border: 0;
-
-    padding: 10px 15px;
-
-    border-radius: 8px;
-
-    color: #fff;
-
-    font-weight: 600;
-
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    transition: .2s;
-}
-
-.btn-blue {
-    background:
-        linear-gradient(
-            135deg,
-            var(--blue),
-            var(--blue2)
-        );
-}
-
-.btn-green {
-    background:
-        linear-gradient(
-            135deg,
-            var(--green),
-            var(--green2)
-        );
-
-    color: #030b18;
-}
-
-.btn-red {
-    background:
-        linear-gradient(
-            135deg,
-            var(--red),
-            var(--red2)
-        );
-}
-
-.btn:hover {
-    transform: translateY(-1px);
-
-    filter: brightness(1.1);
-}
-
-/* =========================================================
-   UPLOAD
-========================================================= */
-
-.upload-box {
-    background: var(--panel);
-
-    border: 1px solid var(--border);
-
-    border-radius: 14px;
-
-    padding: 20px;
-
-    margin-bottom: 22px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 20px;
-
-    box-shadow: var(--shadow);
-}
-
-.upload-info {
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-}
-
-.upload-icon {
-    width: 48px;
-    height: 48px;
-
-    border-radius: 12px;
-
-    background: rgba(118,188,33,.12);
-
-    color: var(--green);
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-}
-
-.file-name {
-    font-weight: bold;
-}
-
-.file-status {
-    color: var(--muted);
-
-    font-size: 12px;
-
-    margin-top: 4px;
-}
-
-/* =========================================================
-   KPI
-========================================================= */
-
-.kpi-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap: 15px;
-
-    margin-bottom: 20px;
-}
-
-.kpi {
-    background: var(--panel);
-
-    border: 1px solid var(--border);
-
-    border-radius: 13px;
-
-    padding: 19px;
-
-    box-shadow: var(--shadow);
-
-    position: relative;
-
-    overflow: hidden;
-}
-
-.kpi::after {
-    content: "";
-
-    position: absolute;
-
-    width: 90px;
-    height: 90px;
-
-    border-radius: 50%;
-
-    right: -40px;
-    top: -40px;
-
-    background:
-        rgba(118,188,33,.08);
-}
-
-.kpi.red::after {
-    background:
-        rgba(239,51,64,.08);
-}
-
-.kpi-head {
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-}
-
-.kpi-icon {
-    width: 36px;
-    height: 36px;
-
-    border-radius: 9px;
-
-    background:
-        rgba(118,188,33,.12);
-
-    color: var(--green);
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-}
-
-.kpi.red .kpi-icon {
-    background:
-        rgba(239,51,64,.12);
-
-    color: var(--red);
+.tab { 
+    display: none; 
 }
 
-.kpi-label {
-    color: var(--muted);
-
-    font-size: 11px;
-}
-
-.kpi-value {
-    font-size: 24px;
-
-    font-weight: bold;
-
-    margin-top: 5px;
-}
-
-.kpi-change {
-    font-size: 10px;
-
-    color: var(--green);
-
-    margin-top: 7px;
+.tab.active { 
+    display: block; 
 }
-
-/* =========================================================
-   CARDS
-========================================================= */
-
-.card {
-    background: var(--panel);
-
-    border: 1px solid var(--border);
-
-    border-radius: 13px;
-
-    padding: 18px;
-
-    box-shadow: var(--shadow);
-}
-
-.card-title {
-    display: flex;
-
-    justify-content: space-between;
 
-    align-items: center;
-
-    margin-bottom: 17px;
+.btn { 
+    border: 0; 
+    padding: 10px 15px; 
+    border-radius: 8px; 
+    color: #fff; 
+    font-weight: 600; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px; 
+    cursor: pointer; 
 }
 
-.card-title h3 {
-    font-size: 14px;
+.btn-blue { 
+    background: linear-gradient(135deg, var(--blue), var(--blue2)); 
 }
-
-.grid-2 {
-    display: grid;
 
-    grid-template-columns:
-        1fr 1fr;
-
-    gap: 18px;
+.btn-green { 
+    background: linear-gradient(135deg, var(--green), var(--green2)); 
+    color: #030b18; 
 }
-
-.chart-container {
-    height: 300px;
 
-    position: relative;
+.btn-red { 
+    background: linear-gradient(135deg, var(--red), var(--red2)); 
 }
 
-/* =========================================================
-   TABLES
-========================================================= */
-
-.table-wrap {
-    overflow: auto;
-
-    max-height: 520px;
+.upload-box { 
+    background: var(--panel); 
+    border: 1px solid var(--border); 
+    border-radius: 14px; 
+    padding: 20px; 
+    margin-bottom: 22px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
 }
 
-table {
-    width: 100%;
-
-    border-collapse: collapse;
-
-    min-width: 800px;
+.kpi-grid { 
+    display: grid; 
+    grid-template-columns: repeat(4,1fr); 
+    gap: 15px; 
+    margin-bottom: 20px; 
 }
-
-th {
-    background: var(--table-header);
 
-    color: var(--muted);
-
-    font-size: 10px;
-
-    text-transform: uppercase;
-
-    padding: 12px;
-
-    text-align: left;
-
-    position: sticky;
-
-    top: 0;
-
-    z-index: 2;
+.kpi { 
+    background: var(--panel); 
+    border: 1px solid var(--border); 
+    border-radius: 13px; 
+    padding: 19px; 
 }
 
-td {
-    border-top: 1px solid var(--table-border);
-
-    padding: 11px 12px;
-
-    font-size: 11px;
+.kpi-label { 
+    color: var(--muted); 
+    font-size: 11px; 
 }
 
-tr:hover td {
-    background: var(--table-hover);
+.kpi-value { 
+    font-size: 24px; 
+    font-weight: bold; 
+    margin-top: 5px; 
 }
-
-/* =========================================================
-   SETTINGS
-========================================================= */
 
-.setting-row {
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    padding: 16px 0;
-
-    border-bottom: 1px solid var(--border);
+.grid-2 { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 18px; 
 }
 
-.switch {
-    width: 42px;
-    height: 22px;
-
-    background: #143159;
-
-    border-radius: 20px;
-
-    position: relative;
-
-    cursor: pointer;
+.card { 
+    background: var(--panel); 
+    border: 1px solid var(--border); 
+    border-radius: 13px; 
+    padding: 18px; 
+    margin-bottom: 20px; 
 }
-
-.switch::after {
-    content: "";
 
-    width: 16px;
-    height: 16px;
-
-    border-radius: 50%;
-
-    background: white;
-
-    position: absolute;
-
-    top: 3px;
-    left: 3px;
-
-    transition: left .2s;
+.chart-container { 
+    height: 300px; 
+    position: relative; 
 }
 
-.switch.on {
-    background: var(--green);
+.table-wrap { 
+    overflow: auto; 
+    max-height: 520px; 
 }
 
-.switch.on::after {
-    left: 23px;
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    min-width: 700px; 
 }
-
-/* =========================================================
-   USER BADGE
-========================================================= */
-
-.user-badge {
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    padding: 7px 10px;
 
-    border: 1px solid var(--border);
-
-    background: var(--panel);
-
-    border-radius: 8px;
-
-    font-size: 11px;
-
-    color: var(--muted);
+th { 
+    background: var(--table-header); 
+    color: var(--muted); 
+    font-size: 10px; 
+    text-transform: uppercase; 
+    padding: 12px; 
+    text-align: left; 
+    position: sticky; 
+    top: 0; 
 }
 
-.user-badge strong {
-    color: var(--text);
+td { 
+    border-top: 1px solid var(--table-border); 
+    padding: 11px 12px; 
+    font-size: 11px; 
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:1100px) {
-
-    .kpi-grid {
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
-    .grid-2 {
-        grid-template-columns:1fr;
-    }
+tr:hover td { 
+    background: var(--table-hover); 
 }
-
-@media(max-width:800px) {
-
-    .sidebar {
-        transform: translateX(-100%);
-    }
 
-    .sidebar.open {
-        transform: translateX(0);
-    }
-
-    .main {
-        margin-left: 0;
-    }
-
-    .mobile-menu {
-        display: flex;
-    }
-
-    .topbar {
-        padding: 0 15px;
-    }
-
-    .content {
-        padding: 15px;
-    }
-
-    .upload-box {
-        flex-direction: column;
-
-        align-items: flex-start;
-    }
-
-    .kpi-grid {
-        grid-template-columns:1fr;
-    }
-
-    .user-badge {
-        display:none;
-    }
+@media(max-width:1100px) { 
+    .kpi-grid { grid-template-columns: repeat(2,1fr); } 
+    .grid-2 { grid-template-columns: 1fr; } 
 }
 
-@media(max-width:500px) {
-
-    .login-card {
-        padding: 25px 20px;
-    }
+@media(max-width:800px) { 
+    .sidebar { transform: translateX(-100%); } 
+    .main { margin-left: 0; } 
 }
-
 </style>
 </head>
 
 <body>
 
-
 <!-- =========================================================
-     LOGIN
+     MÓDULO DE AUTENTICACIÓN
 ========================================================= -->
-
 <div id="loginScreen">
-
     <div class="login-card">
-
         <div class="login-logo">
-
             <div class="ctp-logo">
-
-                <div class="ctp-main">
-                    C<span>T</span>P
-                </div>
-
-                <div class="ctp-small">
-                    COBRANZA TOTAL
-                </div>
-
+                <div class="ctp-main">C<span>T</span>P</div>
+                <div class="ctp-small">COBRANZA TOTAL</div>
             </div>
-
         </div>
-
-        <h1>
-            COBRANZA TOTAL
-        </h1>
-
-        <div class="login-subtitle">
-            Plataforma Inteligente de Auditoría
-        </div>
-
-
+        <h1>COBRANZA TOTAL</h1>
+        <div class="login-subtitle">Plataforma Inteligente de Auditoría</div>
         <div class="login-field">
-
-            <label>
-                USUARIO
-            </label>
-
-            <input
-                class="login-input"
-                type="text"
-                id="loginUser"
-                value="admin"
-                placeholder="Ingrese su usuario"
-                autocomplete="username"
-            >
-
+            <label>USUARIO</label>
+            <input class="login-input" type="text" id="loginUser" value="admin">
         </div>
-
-
         <div class="login-field">
-
-            <label>
-                CONTRASEÑA
-            </label>
-
-            <input
-                class="login-input"
-                type="password"
-                id="loginPassword"
-                placeholder="Ingrese su contraseña"
-                autocomplete="current-password"
-            >
-
+            <label>CONTRASEÑA</label>
+            <input class="login-input" type="password" id="loginPassword" value="1234">
         </div>
-
-
-        <button
-            class="login-button"
-            onclick="login()"
-        >
-            INICIAR SESIÓN
-        </button>
-
-
-        <div
-            id="loginMsg"
-            class="login-message"
-        ></div>
-
-
-        <div class="login-footer">
-            Sistema de acceso restringido · CTP
-        </div>
-
+        <button class="login-button" onclick="login()">INICIAR SESIÓN</button>
+        <div id="loginMsg" style="color: var(--red); font-size: 11px; margin-top: 10px; text-align: center;"></div>
     </div>
-
 </div>
-
 
 <!-- =========================================================
-     DASHBOARD
+     PLATAFORMA PRINCIPAL
 ========================================================= -->
-
 <div id="dashboard">
-
-
-<!-- SIDEBAR -->
-
-<aside class="sidebar" id="sidebar">
-
-    <div class="logo-container">
-
-        <div class="logo-badge-container">
-
-            <div class="logo-title-cobranza">
-                COBRANZA
+    <!-- BARRA NAVEGACIÓN LATERAL -->
+    <aside class="sidebar">
+        <div class="logo-container">
+            <div class="logo-badge-container">
+                <div class="logo-title-cobranza">COBRANZA</div>
+                <div class="logo-title-total">TOTAL</div>
             </div>
-
-            <div class="logo-title-total-wrap">
-
-                <i
-                    data-lucide="check"
-                    class="logo-check-icon"
-                    style="width:18px;height:18px;"
-                ></i>
-
-                <div class="logo-title-total">
-                    TOTAL
-                </div>
-
-            </div>
-
-            <div class="logo-centrales-pill">
-                CENTRALES
-            </div>
-
-            <div class="logo-56-wrap">
-                56<span>+</span>
-            </div>
-
         </div>
+        <div class="menu-title">Principal</div>
+        <button class="nav-btn active" onclick="switchTab('inicio', this)"><i data-lucide="layout-dashboard"></i> Inicio</button>
+        <button class="nav-btn" onclick="switchTab('gestores', this)"><i data-lucide="users"></i> Gestores</button>
+        <button class="nav-btn" onclick="switchTab('zonas', this)"><i data-lucide="map"></i> Zonas</button>
+        <div class="menu-title">Operación</div>
+        <button class="nav-btn" onclick="switchTab('registros', this)"><i data-lucide="database"></i> Registros</button>
+    </aside>
 
-    </div>
-
-
-    <div class="menu-title">
-        Principal
-    </div>
-
-    <button
-        class="nav-btn active"
-        data-tab="inicio"
-    >
-        <i data-lucide="layout-dashboard"></i>
-        Inicio
-    </button>
-
-    <button
-        class="nav-btn"
-        data-tab="gestores"
-    >
-        <i data-lucide="users"></i>
-        Gestores
-    </button>
-
-    <button
-        class="nav-btn"
-        data-tab="zonas"
-    >
-        <i data-lucide="map"></i>
-        Zonas
-    </button>
-
-    <button
-        class="nav-btn"
-        data-tab="analisis"
-    >
-        <i data-lucide="bar-chart-3"></i>
-        Análisis
-    </button>
-
-
-    <div class="menu-title">
-        Operación
-    </div>
-
-    <button
-        class="nav-btn"
-        data-tab="registros"
-    >
-        <i data-lucide="database"></i>
-        Registros
-    </button>
-
-
-    <div class="menu-title">
-        Sistema
-    </div>
-
-    <button
-        class="nav-btn"
-        data-tab="configuracion"
-    >
-        <i data-lucide="settings"></i>
-        Configuración
-    </button>
-
-
-    <div class="sidebar-bottom">
-
-        <div
-            class="card"
-            style="padding:12px"
-        >
-
-            <div
-                style="
-                    font-size:10px;
-                    color:var(--muted)
-                "
-            >
-                ARCHIVO ACTIVO
-            </div>
-
-            <div
-                id="sidebarFile"
-                style="
-                    font-size:11px;
-                    margin-top:5px
-                "
-            >
-                Ningún archivo
-            </div>
-
-        </div>
-
-    </div>
-
-</aside>
-
-
-<!-- MAIN -->
-
-<main class="main">
-
-    <header class="topbar">
-
-        <div
-            style="
-                display:flex;
-                align-items:center;
-                gap:12px
-            "
-        >
-
-            <button
-                class="icon-btn mobile-menu"
-                id="mobileMenuBtn"
-            >
-                <i data-lucide="menu"></i>
-            </button>
-
-
-            <div class="page-title">
-
-                <h2>
-                    Dashboard Ejecutivo
-                </h2>
-
-                <p>
-                    Plataforma Inteligente — Centrales 56+
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="top-actions">
-
-            <div class="user-badge">
-
-                <i
-                    data-lucide="user"
-                    style="width:14px"
-                ></i>
-
-                Usuario:
-                <strong id="activeUser">
-                    admin
-                </strong>
-
-            </div>
-
-
-            <button
-                class="icon-btn"
-                onclick="switchTab('configuracion')"
-            >
-                <i data-lucide="settings"></i>
-            </button>
-
-
-            <button
-                class="btn btn-green"
-                onclick="
-                    document
-                    .getElementById('excelFile')
-                    .click()
-                "
-            >
-                <i data-lucide="upload"></i>
-                Cargar Excel
-            </button>
-
-
-            <button
-                class="btn btn-red"
-                onclick="logout()"
-            >
-                <i data-lucide="log-out"></i>
-                Salir
-            </button>
-
-        </div>
-
-    </header>
-
-
-    <div class="content">
-
-
-        <!-- =================================================
-             UPLOAD
-        ================================================== -->
-
-        <div class="upload-box">
-
-            <div class="upload-info">
-
-                <div class="upload-icon">
-
-                    <i data-lucide="file-spreadsheet"></i>
-
-                </div>
-
-                <div>
-
-                    <div
-                        class="file-name"
-                        id="fileName"
-                    >
-                        No hay archivo cargado
-                    </div>
-
-                    <div
-                        class="file-status"
-                        id="fileStatus"
-                    >
-                        Carga tu archivo de indicadores para comenzar
-                    </div>
-
-                </div>
-
-            </div>
-
-
+    <!-- ÁREA DE TRABAJO -->
+    <main class="main">
+        <header class="topbar">
             <div>
+                <h2>Dashboard Ejecutivo</h2>
+                <p style="font-size:11px; color:var(--muted)">Centrales 56+</p>
+            </div>
+            <div class="top-actions">
+                <button class="btn btn-green" onclick="document.getElementById('excelFile').click()"><i data-lucide="upload"></i> Cargar Excel</button>
+                <button class="btn btn-red" onclick="logout()"><i data-lucide="log-out"></i> Salir</button>
+            </div>
+        </header>
 
-                <input
-                    type="file"
-                    id="excelFile"
-                    accept=".xlsx,.xls,.csv"
-                    hidden
-                >
-
-                <button
-                    class="btn btn-blue"
-                    onclick="
-                        document
-                        .getElementById('excelFile')
-                        .click()
-                    "
-                >
-
-                    <i data-lucide="folder-open"></i>
-
-                    Seleccionar archivo
-
-                </button>
-
+        <div class="content">
+            <!-- COMPONENTE CARGA DE ARCHIVO -->
+            <div class="upload-box">
+                <div>
+                    <div id="fileName" style="font-weight:bold">No hay archivo cargado</div>
+                    <div id="fileStatus" style="font-size:12px; color:var(--muted)">Carga tu archivo (.xlsx, .xls, .csv) para procesar datos</div>
+                </div>
+                <input type="file" id="excelFile" accept=".xlsx,.xls,.csv" hidden onchange="handleFileUpload(event)">
+                <button class="btn btn-blue" onclick="document.getElementById('excelFile').click()"><i data-lucide="folder-open"></i> Seleccionar</button>
             </div>
 
+            <!-- PANEL DE FILTROS EN TIEMPO REAL -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>Filtrar por Zona</label>
+                    <select id="filterZone" class="filter-input" onchange="applyFilters()">
+                        <option value="ALL">Todas las zonas</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Filtrar por Gestor</label>
+                    <select id="filterManager" class="filter-input" onchange="applyFilters()">
+                        <option value="ALL">Todos los gestores</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Búsqueda General</label>
+                    <input type="text" id="filterSearch" class="filter-input" placeholder="Buscar registros..." oninput="applyFilters()">
+                </div>
+            </div>
+
+            <!-- SECCIÓN: INICIO / DASHBOARD -->
+            <section class="tab active" id="tab-inicio">
+                <div class="kpi-grid">
+                    <div class="kpi">
+                        <div class="kpi-label">COBRANZA TOTAL</div>
+                        <div class="kpi-value" id="kpiTotal">$0.00</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi-label">TOTAL COMISIONES</div>
+                        <div class="kpi-value" id="kpiCommission" style="color:var(--red)">$0.00</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi-label">TRANSACCIONES</div>
+                        <div class="kpi-value" id="kpiTransactions">0</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi-label">TICKET PROMEDIO</div>
+                        <div class="kpi-value" id="kpiAverage">$0.00</div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>Recaudación por Zona</h3>
+                        <div class="chart-container"><canvas id="zoneChart"></canvas></div>
+                    </div>
+                    <div class="card">
+                        <h3>Top Gestores</h3>
+                        <div class="chart-container"><canvas id="managerChart"></canvas></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: GESTORES -->
+            <section class="tab" id="tab-gestores">
+                <div class="card">
+                    <h3>Rendimiento de Gestores</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Gestor</th>
+                                    <th>Operaciones</th>
+                                    <th>Cobranza Total</th>
+                                    <th>Comisión Total</th>
+                                    <th>Ticket Promedio</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gestoresBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: ZONAS -->
+            <section class="tab" id="tab-zonas">
+                <div class="card">
+                    <h3>Detalle por Zonas</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Zona</th>
+                                    <th>Operaciones</th>
+                                    <th>Cobranza Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="zonesBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: REGISTROS -->
+            <section class="tab" id="tab-registros">
+                <div class="card">
+                    <h3>Tabla de Registros Detallada</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead id="recordsHeader"></thead>
+                            <tbody id="recordsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
         </div>
-
-
-        <!-- =================================================
-             INICIO
-        ================================================== -->
-
-        <section
-            class="tab active"
-            id="tab-inicio"
-        >
-
-            <div class="kpi-grid">
-
-                <div class="kpi">
-
-                    <div class="kpi-head">
-
-                        <div>
-
-                            <div class="kpi-label">
-                                COBRANZA TOTAL
-                            </div>
-
-                            <div
-                                class="kpi-value"
-                                id="kpiTotal"
-                            >
-                                $0.00
-                            </div>
-
-                        </div>
-
-                        <div class="kpi-icon">
-                            <i data-lucide="wallet"></i>
-                        </div>
-
-                    </div>
-
-                    <div class="kpi-change">
-                        ● Recaudación acumulada
-                    </div>
-
-                </div>
-
-
-                <div class="kpi red">
-
-                    <div class="kpi-head">
-
-                        <div>
-
-                            <div class="kpi-label">
-                                TOTAL COMISIONES
-                            </div>
-
-                            <div
-                                class="kpi-value"
-                                id="kpiCommission"
-                            >
-                                $0.00
-                            </div>
-
-                        </div>
-
-                        <div class="kpi-icon">
-                            <i data-lucide="badge-dollar-sign"></i>
-                        </div>
-
-                    </div>
-
-                    <div class="kpi-change">
-                        Monto total comisionado
-                    </div>
-
-                </div>
-
-
-                <div class="kpi">
-
-                    <div class="kpi-head">
-
-                        <div>
-
-                            <div class="kpi-label">
-                                TRANSACCIONES
-                            </div>
-
-                            <div
-                                class="kpi-value"
-                                id="kpiTransactions"
-                            >
-                                0
-                            </div>
-
-                        </div>
-
-                        <div class="kpi-icon">
-                            <i data-lucide="receipt"></i>
-                        </div>
-
-                    </div>
-
-                    <div class="kpi-change">
-                        Pagos registrados
-                    </div>
-
-                </div>
-
-
-                <div class="kpi red">
-
-                    <div class="kpi-head">
-
-                        <div>
-
-                            <div class="kpi-label">
-                                TICKET PROMEDIO
-                            </div>
-
-                            <div
-                                class="kpi-value"
-                                id="kpiAverage"
-                            >
-                                $0.00
-                            </div>
-
-                        </div>
-
-                        <div class="kpi-icon">
-                            <i data-lucide="trending-up"></i>
-                        </div>
-
-                    </div>
-
-                    <div class="kpi-change">
-                        Promedio por pago
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="grid-2">
-
-                <div class="card">
-
-                    <div class="card-title">
-
-                        <h3>
-                            Recaudación por Zona
-                        </h3>
-
-                        <span>
-                            Distribución
-                        </span>
-
-                    </div>
-
-                    <div class="chart-container">
-
-                        <canvas id="zoneChart"></canvas>
-
-                    </div>
-
-                </div>
-
-
-                <div class="card">
-
-                    <div class="card-title">
-
-                        <h3>
-                            Top 5 Gestores
-                        </h3>
-
-                        <span>
-                            Por Cobranza Total
-                        </span>
-
-                    </div>
-
-                    <div class="chart-container">
-
-                        <canvas id="managerChart"></canvas>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             GESTORES
-        ================================================== -->
-
-        <section
-            class="tab"
-            id="tab-gestores"
-        >
-
-            <div class="card">
-
-                <div class="card-title">
-
-                    <h3>
-                        Rendimiento de Gestores
-                    </h3>
-
-                </div>
-
-                <div class="table-wrap">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>#</th>
-                                <th>Gestor</th>
-                                <th>Operaciones</th>
-                                <th>Cobranza Total</th>
-                                <th>Comisión Total</th>
-                                <th>Ticket Promedio</th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody id="gestoresBody"></tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             ZONAS
-        ================================================== -->
-
-        <section
-            class="tab"
-            id="tab-zonas"
-        >
-
-            <div class="card">
-
-                <div class="card-title">
-
-                    <h3>
-                        Detalle por Zonas
-                    </h3>
-
-                </div>
-
-                <div class="table-wrap">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-                                <th>Zona</th>
-                                <th>Operaciones</th>
-                                <th>Cobranza Total</th>
-                            </tr>
-
-                        </thead>
-
-                        <tbody id="zonesBody"></tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             ANALISIS
-        ================================================== -->
-
-        <section
-            class="tab"
-            id="tab-analisis"
-        >
-
-            <div class="card">
-
-                <div class="card-title">
-
-                    <h3>
-                        Análisis Operativo
-                    </h3>
-
-                </div>
-
-                <p
-                    style="
-                        color:var(--muted);
-                        font-size:12px;
-                    "
-                >
-                    El análisis gráfico detallado se habilita al cargar el archivo de indicadores.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             REGISTROS
-        ================================================== -->
-
-        <section
-            class="tab"
-            id="tab-registros"
-        >
-
-            <div class="card">
-
-                <div class="card-title">
-
-                    <h3>
-                        Registros de Pagos
-                    </h3>
-
-                    <span id="recordCount">
-                        0 registros
-                    </span>
-
-                </div>
-
-                <div class="table-wrap">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>Cliente Único</th>
-                                <th>Gestor</th>
-                                <th>Zona</th>
-                                <th>Cobranza Total</th>
-                                <th>Comisión</th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody id="recordsBody"></tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             CONFIGURACION
-        ================================================== -->
-
-        <section
-            class="tab"
-            id="tab-configuracion"
-        >
-
-            <div class="card">
-
-                <div class="card-title">
-
-                    <h3>
-                        Configuración del Sistema
-                    </h3>
-
-                </div>
-
-
-                <div class="setting-row">
-
-                    <div>
-
-                        <h4 style="font-size:12px">
-                            Modo Oscuro / Claro
-                        </h4>
-
-                        <p
-                            style="
-                                font-size:10px;
-                                color:var(--muted)
-                            "
-                        >
-                            Cambia la apariencia visual de la plataforma.
-                        </p>
-
-                    </div>
-
-
-                    <div
-                        class="switch"
-                        id="themeToggle"
-                        onclick="toggleTheme()"
-                    ></div>
-
-                </div>
-
-
-                <div class="setting-row">
-
-                    <div>
-
-                        <h4 style="font-size:12px">
-                            Sesión actual
-                        </h4>
-
-                        <p
-                            style="
-                                font-size:10px;
-                                color:var(--muted)
-                            "
-                        >
-                            Usuario conectado actualmente.
-                        </p>
-
-                    </div>
-
-                    <strong id="configUser">
-                        admin
-                    </strong>
-
-                </div>
-
-
-                <div
-                    style="
-                        margin-top:20px;
-                        padding-top:10px
-                    "
-                >
-
-                    <button
-                        class="btn btn-red"
-                        onclick="logout()"
-                    >
-
-                        <i data-lucide="log-out"></i>
-
-                        Cerrar sesión
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-    </div>
-
-</main>
-
+    </main>
 </div>
 
-
+<!-- =========================================================
+     LÓGICA JAVASCRIPT INTEGRAL
+========================================================= -->
 <script>
-
-/* =========================================================
-   CREDENCIALES
-========================================================= */
-
-const CREDENTIALS = {
-
-    username: "admin",
-
-    password: "Admin2026!"
-
-};
-
-
-/* =========================================================
-   VARIABLES DEL DASHBOARD
-========================================================= */
-
-let rawData = [];
-
-let charts = {};
-
-let currentUser = "";
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-function login() {
-
-    const user =
-        document
-        .getElementById("loginUser")
-        .value
-        .trim();
-
-    const pass =
-        document
-        .getElementById("loginPassword")
-        .value;
-
-    const msg =
-        document
-        .getElementById("loginMsg");
-
-
-    msg.style.color = "";
-
-
-    if (!user || !pass) {
-
-        msg.style.color = "var(--red)";
-
-        msg.innerText =
-            "Complete usuario y contraseña.";
-
-        return;
-
-    }
-
-
-    if (
-        user === CREDENTIALS.username &&
-        pass === CREDENTIALS.password
-    ) {
-
-        currentUser = user;
-
-
-        document
-            .getElementById("activeUser")
-            .innerText = user;
-
-
-        document
-            .getElementById("configUser")
-            .innerText = user;
-
-
-        document
-            .getElementById("loginScreen")
-            .style.display = "none";
-
-
-        document
-            .getElementById("dashboard")
-            .style.display = "block";
-
-
-        msg.innerText = "";
-
-
-        lucide.createIcons();
-
-    }
-
-    else {
-
-        msg.style.color = "#ef3340";
-
-        msg.innerText =
-            "Usuario o contraseña incorrectos.";
-
-        document
-            .getElementById("loginPassword")
-            .value = "";
-
-    }
-
-}
-
-
-/* =========================================================
-   ENTER PARA LOGIN
-========================================================= */
-
-document
-    .getElementById("loginPassword")
-    .addEventListener(
-        "keydown",
-        function(event) {
-
-            if (event.key === "Enter") {
-
-                login();
-
-            }
-
-        }
-    );
-
-
-/* =========================================================
-   CERRAR SESION
-========================================================= */
-
-function logout() {
-
-    currentUser = "";
-
-
-    document
-        .getElementById("dashboard")
-        .style.display = "none";
-
-
-    document
-        .getElementById("loginScreen")
-        .style.display = "flex";
-
-
-    document
-        .getElementById("loginPassword")
-        .value = "";
-
-
-    document
-        .getElementById("loginMsg")
-        .innerText = "";
-
-
-    switchTab("inicio");
-
-}
-
-
-/* =========================================================
-   TEMA
-========================================================= */
-
-function toggleTheme() {
-
-    const body =
-        document.body;
-
-    const switchBtn =
-        document.getElementById(
-            "themeToggle"
-        );
-
-
-    body.classList.toggle(
-        "light-theme"
-    );
-
-
-    switchBtn.classList.toggle(
-        "on"
-    );
-
-}
-
-
-/* =========================================================
-   NAVEGACION
-========================================================= */
-
-const navButtons =
-    document.querySelectorAll(
-        ".nav-btn"
-    );
-
-const tabs =
-    document.querySelectorAll(
-        ".tab"
-    );
-
-
-function switchTab(tabId) {
-
-    navButtons.forEach(
-        btn => {
-
-            btn.classList.toggle(
-                "active",
-                btn.dataset.tab === tabId
-            );
-
-        }
-    );
-
-
-    tabs.forEach(
-        tab => {
-
-            tab.classList.toggle(
-                "active",
-                tab.id === `tab-${tabId}`
-            );
-
-        }
-    );
-
-
-    document
-        .getElementById("sidebar")
-        ?.classList.remove("open");
-
-}
-
-
-navButtons.forEach(
-    btn => {
-
-        btn.addEventListener(
-            "click",
-            () =>
-                switchTab(
-                    btn.dataset.tab
-                )
-        );
-
-    }
-);
-
-
-/* =========================================================
-   MENU MOVIL
-========================================================= */
-
-document
-    .getElementById("mobileMenuBtn")
-    ?.addEventListener(
-        "click",
-        () => {
-
-            document
-                .getElementById("sidebar")
-                .classList
-                .toggle("open");
-
-        }
-    );
-
-
-/* =========================================================
-   EXCEL
-========================================================= */
-
-document
-    .getElementById("excelFile")
-    ?.addEventListener(
-        "change",
-        function(e) {
-
-            const file =
-                e.target.files[0];
-
-
-            if (!file) return;
-
-
-            document
-                .getElementById("fileName")
-                .innerText =
-                    file.name;
-
-
-            document
-                .getElementById("sidebarFile")
-                .innerText =
-                    file.name;
-
-
-            document
-                .getElementById("fileStatus")
-                .innerText =
-                    "Leyendo datos del Excel...";
-
-
-            const reader =
-                new FileReader();
-
-
-            reader.onload =
-                function(evt) {
-
-                    try {
-
-                        const data =
-                            new Uint8Array(
-                                evt.target.result
-                            );
-
-
-                        const workbook =
-                            XLSX.read(
-                                data,
-                                {
-                                    type: "array"
-                                }
-                            );
-
-
-                        const sheetName =
-                            workbook.SheetNames
-                            .includes("PAGOS")
-                            ? "PAGOS"
-                            : workbook.SheetNames[0];
-
-
-                        const worksheet =
-                            workbook.Sheets[
-                                sheetName
-                            ];
-
-
-                        rawData =
-                            XLSX.utils
-                            .sheet_to_json(
-                                worksheet
-                            );
-
-
-                        document
-                            .getElementById(
-                                "fileStatus"
-                            )
-                            .innerText =
-                                `Éxito: ${rawData.length.toLocaleString("es-MX")} registros cargados desde la hoja '${sheetName}'.`;
-
-
-                        processData(
-                            rawData
-                        );
-
-                    }
-
-                    catch(err) {
-
-                        console.error(err);
-
-                        alert(
-                            "Error al leer el archivo Excel."
-                        );
-
-
-                        document
-                            .getElementById(
-                                "fileStatus"
-                            )
-                            .innerText =
-                                "Error en el formato del archivo.";
-
-                    }
-
-                };
-
-
-            reader.readAsArrayBuffer(
-                file
-            );
-
-        }
-    );
-
-
-/* =========================================================
-   PROCESAR DATOS
-========================================================= */
-
-function processData(data) {
-
-    let totalRecaudado = 0;
-
-    let totalComision = 0;
-
-    let gestoresMap = {};
-
-    let zonasMap = {};
-
-
-    data.forEach(row => {
-
-        const monto =
-            parseFloat(
-                row.Cobranza_Total ||
-                row.Monto_Pagado ||
-                row.Monto ||
-                row.MONTO ||
-                0
-            ) || 0;
-
-
-        const comision =
-            parseFloat(
-                row.Monto_Comision ||
-                row.Comision ||
-                0
-            ) || 0;
-
-
-        const gestor =
-            row.Gestor ||
-            row.GESTOR ||
-            row.ID_Empleado ||
-            "SIN ASIGNAR";
-
-
-        const zona =
-            row.Zona ||
-            row.ZONA ||
-            row.Territorio ||
-            "GENERAL";
-
-
-        totalRecaudado += monto;
-
-        totalComision += comision;
-
-
-        if (!gestoresMap[gestor]) {
-
-            gestoresMap[gestor] = {
-
-                count: 0,
-
-                total: 0,
-
-                comision: 0
-
-            };
-
-        }
-
-
-        gestoresMap[gestor].count++;
-
-        gestoresMap[gestor].total += monto;
-
-        gestoresMap[gestor].comision += comision;
-
-
-        if (!zonasMap[zona]) {
-
-            zonasMap[zona] = {
-
-                count: 0,
-
-                total: 0
-
-            };
-
-        }
-
-
-        zonasMap[zona].count++;
-
-        zonasMap[zona].total += monto;
-
-    });
-
-
-    document
-        .getElementById("kpiTotal")
-        .innerText =
-            `$${totalRecaudado.toLocaleString(
-                "es-MX",
-                {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }
-            )}`;
-
-
-    document
-        .getElementById("kpiCommission")
-        .innerText =
-            `$${totalComision.toLocaleString(
-                "es-MX",
-                {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }
-            )}`;
-
-
-    document
-        .getElementById("kpiTransactions")
-        .innerText =
-            data.length.toLocaleString(
-                "es-MX"
-            );
-
-
-    document
-        .getElementById("kpiAverage")
-        .innerText =
-            `$${(
-                data.length
-                ? totalRecaudado / data.length
-                : 0
-            ).toLocaleString(
-                "es-MX",
-                {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }
-            )}`;
-
-
-    renderCharts(
-        zonasMap,
-        gestoresMap
-    );
-
-
-    renderTables(
-        data,
-        gestoresMap,
-        zonasMap
-    );
-
-}
-
-
-/* =========================================================
-   GRAFICAS
-========================================================= */
-
-function renderCharts(
-    zonas,
-    gestores
-) {
-
-    const zoneCanvas =
-        document
-        .getElementById("zoneChart")
-        .getContext("2d");
-
-
-    if (charts.zone)
-        charts.zone.destroy();
-
-
-    charts.zone =
-        new Chart(
-            zoneCanvas,
-            {
-
-                type: "doughnut",
-
-                data: {
-
-                    labels:
-                        Object.keys(zonas),
-
-                    datasets: [{
-
-                        data:
-                            Object.values(zonas)
-                            .map(
-                                z => z.total
-                            ),
-
-                        backgroundColor: [
-                            "#0056ba",
-                            "#76bc21",
-                            "#ef3340",
-                            "#f5b942",
-                            "#8ba2c0",
-                            "#02204c",
-                            "#26a69a"
-                        ]
-
-                    }]
-
-                },
-
-                options: {
-
-                    responsive: true,
-
-                    maintainAspectRatio: false
-
-                }
-
-            }
-        );
-
-
-    const managerCanvas =
-        document
-        .getElementById("managerChart")
-        .getContext("2d");
-
-
-    if (charts.manager)
-        charts.manager.destroy();
-
-
-    const sortedGestores =
-        Object.entries(gestores)
-        .sort(
-            (a,b) =>
-                b[1].total -
-                a[1].total
-        )
-        .slice(0,5);
-
-
-    charts.manager =
-        new Chart(
-            managerCanvas,
-            {
-
-                type: "bar",
-
-                data: {
-
-                    labels:
-                        sortedGestores
-                        .map(
-                            g => g[0]
-                        ),
-
-                    datasets: [{
-
-                        label:
-                            "Cobranza Total ($)",
-
-                        data:
-                            sortedGestores
-                            .map(
-                                g =>
-                                    g[1].total
-                            ),
-
-                        backgroundColor:
-                            "#76bc21"
-
-                    }]
-
-                },
-
-                options: {
-
-                    responsive: true,
-
-                    maintainAspectRatio: false
-
-                }
-
-            }
-        );
-
-}
-
-
-/* =========================================================
-   TABLAS
-========================================================= */
-
-function renderTables(
-    data,
-    gestores,
-    zonas
-) {
-
-    const gestoresBody =
-        document
-        .getElementById(
-            "gestoresBody"
-        );
-
-
-    gestoresBody.innerHTML = "";
-
-
-    Object.entries(gestores)
-
-        .sort(
-            (a,b) =>
-                b[1].total -
-                a[1].total
-        )
-
-        .forEach(
-            ([name,val],idx) => {
-
-                gestoresBody.innerHTML += `
-
-                    <tr>
-
-                        <td>
-                            ${idx + 1}
-                        </td>
-
-                        <td>
-                            <b>${name}</b>
-                        </td>
-
-                        <td>
-                            ${val.count.toLocaleString("es-MX")}
-                        </td>
-
-                        <td>
-                            $${val.total.toLocaleString(
-                                "es-MX",
-                                {
-                                    minimumFractionDigits:2
-                                }
-                            )}
-                        </td>
-
-                        <td>
-                            $${val.comision.toLocaleString(
-                                "es-MX",
-                                {
-                                    minimumFractionDigits:2
-                                }
-                            )}
-                        </td>
-
-                        <td>
-                            $${(
-                                val.total /
-                                val.count
-                            ).toLocaleString(
-                                "es-MX",
-                                {
-                                    minimumFractionDigits:2
-                                }
-                            )}
-                        </td>
-
-                    </tr>
-
-                `;
-
-            }
-        );
-
-
-    const zonesBody =
-        document
-        .getElementById(
-            "zonesBody"
-        );
-
-
-    zonesBody.innerHTML = "";
-
-
-    Object.entries(zonas)
-
-        .sort(
-            (a,b) =>
-                b[1].total -
-                a[1].total
-        )
-
-        .forEach(
-            ([name,val]) => {
-
-                zonesBody.innerHTML += `
-
-                    <tr>
-
-                        <td>
-                            <b>${name}</b>
-                        </td>
-
-                        <td>
-                            ${val.count.toLocaleString("es-MX")}
-                        </td>
-
-                        <td>
-                            $${val.total.toLocaleString(
-                                "es-MX",
-                                {
-                                    minimumFractionDigits:2
-                                }
-                            )}
-                        </td>
-
-                    </tr>
-
-                `;
-
-            }
-        );
-
-
-    const recordsBody =
-        document
-        .getElementById(
-            "recordsBody"
-        );
-
-
-    recordsBody.innerHTML = "";
-
-
-    document
-        .getElementById(
-            "recordCount"
-        )
-        .innerText =
-            `${data.length.toLocaleString(
-                "es-MX"
-            )} registros`;
-
-
-    data
-        .slice(0,100)
-        .forEach(
-            row => {
-
-                const cliente =
-                    row.Cliente_Unico ||
-                    row.Cliente ||
-                    row.ID ||
-                    "N/A";
-
-
-                const gestor =
-                    row.Gestor ||
-                    row.GESTOR ||
-                    "N/A";
-
-
-                const zona =
-                    row.Zona ||
-                    row.ZONA ||
-                    "N/A";
-
-
-                const monto =
-                    parseFloat(
-                        row.Cobranza_Total ||
-                        row.Monto_Pagado ||
-                        0
-                    ) || 0;
-
-
-                const comision =
-                    parseFloat(
-                        row.Monto_Comision ||
-                        0
-                    ) || 0;
-
-
-                recordsBody.innerHTML += `
-
-                    <tr>
-
-                        <td>
-                            ${cliente}
-                        </td>
-
-                        <td>
-                            ${gestor}
-                        </td>
-
-                        <td>
-                            ${zona}
-                        </td>
-
-                        <td>
-                            $${monto.toLocaleString(
-                                "es-MX",
-                                {
-                                    minimumFractionDigits:2
-                                }
-                            )}
-                        </td>
-
-                        <td>
-                            $${comision.toLocaleString(
-                                "es-MX",
-                                {
-                                    minimumFractionDigits:2
-                                }
-                            )}
-                        </td>
-
-                    </tr>
-
-                `;
-
-            }
-        );
-
-}
-
-
-/* =========================================================
-   ICONOS
-========================================================= */
+let rawData = [];      
+let filteredData = []; 
+let zoneChartInstance = null;
+let managerChartInstance = null;
 
 lucide.createIcons();
 
-</script>
+function login() {
+    const u = document.getElementById('loginUser').value;
+    const p = document.getElementById('loginPassword').value;
+    if(u && p) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+    } else {
+        document.getElementById('loginMsg').innerText = 'Ingrese usuario y contraseña válidos';
+    }
+}
 
+function logout() {
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+}
+
+function switchTab(tabId, element) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    
+    document.getElementById('tab-' + tabId).classList.add('active');
+    if(element) element.classList.add('active');
+}
+
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    document.getElementById('fileName').innerText = file.name;
+    document.getElementById('fileStatus').innerText = "Procesando información...";
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        
+        const firstSheet = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheet];
+        const json = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+        
+        if(json.length === 0) {
+            document.getElementById('fileStatus').innerText = "El archivo cargado no contiene datos";
+            return;
+        }
+
+        rawData = normalizeData(json);
+        populateFilterDropdowns(rawData);
+        applyFilters();
+        
+        document.getElementById('fileStatus').innerText = `Cargados ${rawData.length} registros exitosamente.`;
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+function normalizeData(data) {
+    return data.map(row => {
+        const keys = Object.keys(row);
+        
+        const getVal = (possibleNames) => {
+            const key = keys.find(k => possibleNames.some(p => k.toLowerCase().trim() === p.toLowerCase()));
+            return key ? row[key] : '';
+        };
+
+        const parseNum = (val) => {
+            if(typeof val === 'number') return val;
+            if(!val) return 0;
+            let cleaned = String(val).replace(/[^0-9.-]+/g, "");
+            return parseFloat(cleaned) || 0;
+        };
+
+        return {
+            ...row,
+            Zona: String(getVal(['zona', 'region', 'area', 'sucursal']) || 'Sin Zona').trim(),
+            Gestor: String(getVal(['gestor', 'ejecutivo', 'agente', 'nombre', 'usuario']) || 'Sin Gestor').trim(),
+            Monto: parseNum(getVal(['monto', 'cobranza', 'recaudacion', 'pago', 'total', 'importe'])),
+            Comision: parseNum(getVal(['comision', 'comisiones', 'fee', 'honorarios']))
+        };
+    });
+}
+
+function populateFilterDropdowns(data) {
+    const zones = [...new Set(data.map(d => d.Zona))].sort();
+    const managers = [...new Set(data.map(d => d.Gestor))].sort();
+
+    const zSelect = document.getElementById('filterZone');
+    const mSelect = document.getElementById('filterManager');
+
+    zSelect.innerHTML = '<option value="ALL">Todas las zonas</option>';
+    mSelect.innerHTML = '<option value="ALL">Todos los gestores</option>';
+
+    zones.forEach(z => zSelect.innerHTML += `<option value="${z}">${z}</option>`);
+    managers.forEach(m => mSelect.innerHTML += `<option value="${m}">${m}</option>`);
+}
+
+function applyFilters() {
+    const selectedZone = document.getElementById('filterZone').value;
+    const selectedManager = document.getElementById('filterManager').value;
+    const searchText = document.getElementById('filterSearch').value.toLowerCase();
+
+    filteredData = rawData.filter(item => {
+        const matchZone = (selectedZone === 'ALL' || item.Zona === selectedZone);
+        const matchManager = (selectedManager === 'ALL' || item.Gestor === selectedManager);
+        const matchSearch = Object.values(item).some(val => 
+            String(val).toLowerCase().includes(searchText)
+        );
+
+        return matchZone && matchManager && matchSearch;
+    });
+
+    updateDashboard();
+}
+
+function updateDashboard() {
+    updateKPIs();
+    updateCharts();
+    updateGestoresTable();
+    updateZonasTable();
+    updateRegistrosTable();
+}
+
+function formatCurrency(val) {
+    return '$' + val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function updateKPIs() {
+    const totalCobranza = filteredData.reduce((acc, curr) => acc + curr.Monto, 0);
+    const totalComision = filteredData.reduce((acc, curr) => acc + curr.Comision, 0);
+    const totalTransacciones = filteredData.length;
+    const ticketPromedio = totalTransacciones > 0 ? (totalCobranza / totalTransacciones) : 0;
+
+    document.getElementById('kpiTotal').innerText = formatCurrency(totalCobranza);
+    document.getElementById('kpiCommission').innerText = formatCurrency(totalComision);
+    document.getElementById('kpiTransactions').innerText = totalTransacciones.toLocaleString();
+    document.getElementById('kpiAverage').innerText = formatCurrency(ticketPromedio);
+}
+
+function updateCharts() {
+    const zoneMap = {};
+    filteredData.forEach(d => {
+        zoneMap[d.Zona] = (zoneMap[d.Zona] || 0) + d.Monto;
+    });
+
+    const managerMap = {};
+    filteredData.forEach(d => {
+        managerMap[d.Gestor] = (managerMap[d.Gestor] || 0) + d.Monto;
+    });
+
+    const zoneLabels = Object.keys(zoneMap);
+    const zoneValues = Object.values(zoneMap);
+
+    if (zoneChartInstance) zoneChartInstance.destroy();
+    zoneChartInstance = new Chart(document.getElementById('zoneChart'), {
+        type: 'doughnut',
+        data: {
+            labels: zoneLabels,
+            datasets: [{
+                data: zoneValues,
+                backgroundColor: ['#0056ba', '#76bc21', '#f5b942', '#ef3340', '#8ba2c0', '#0e2342']
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+
+    const sortedManagers = Object.entries(managerMap)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+
+    if (managerChartInstance) managerChartInstance.destroy();
+    managerChartInstance = new Chart(document.getElementById('managerChart'), {
+        type: 'bar',
+        data: {
+            labels: sortedManagers.map(m => m[0]),
+            datasets: [{
+                label: 'Cobranza Total',
+                data: sortedManagers.map(m => m[1]),
+                backgroundColor: '#76bc21'
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+}
+
+function updateGestoresTable() {
+    const stats = {};
+    filteredData.forEach(d => {
+        if (!stats[d.Gestor]) {
+            stats[d.Gestor] = { ops: 0, cobranza: 0, comision: 0 };
+        }
+        stats[d.Gestor].ops++;
+        stats[d.Gestor].cobranza += d.Monto;
+        stats[d.Gestor].comision += d.Comision;
+    });
+
+    const tbody = document.getElementById('gestoresBody');
+    tbody.innerHTML = '';
+
+    Object.keys(stats).forEach((gestor, i) => {
+        const item = stats[gestor];
+        const avg = item.cobranza / item.ops;
+        tbody.innerHTML += `
+            <tr>
+                <td>${i + 1}</td>
+                <td><strong>${gestor}</strong></td>
+                <td>${item.ops}</td>
+                <td>${formatCurrency(item.cobranza)}</td>
+                <td>${formatCurrency(item.comision)}</td>
+                <td>${formatCurrency(avg)}</td>
+            </tr>
+        `;
+    });
+}
+
+function updateZonasTable() {
+    const stats = {};
+    filteredData.forEach(d => {
+        if (!stats[d.Zona]) {
+            stats[d.Zona] = { ops: 0, cobranza: 0 };
+        }
+        stats[d.Zona].ops++;
+        stats[d.Zona].cobranza += d.Monto;
+    });
+
+    const tbody = document.getElementById('zonesBody');
+    tbody.innerHTML = '';
+
+    Object.keys(stats).forEach(zona => {
+        const item = stats[zona];
+        tbody.innerHTML += `
+            <tr>
+                <td><strong>${zona}</strong></td>
+                <td>${item.ops}</td>
+                <td>${formatCurrency(item.cobranza)}</td>
+            </tr>
+        `;
+    });
+}
+
+function updateRegistrosTable() {
+    const thead = document.getElementById('recordsHeader');
+    const tbody = document.getElementById('recordsBody');
+
+    if (filteredData.length === 0) {
+        thead.innerHTML = '';
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center">Sin datos para mostrar</td></tr>';
+        return;
+    }
+
+    const keys = Object.keys(filteredData[0]).filter(k => k !== 'Monto' && k !== 'Comision');
+
+    thead.innerHTML = `<tr>${keys.map(k => `<th>${k}</th>`).join('')}</tr>`;
+    
+    tbody.innerHTML = filteredData.slice(0, 100).map(row => {
+        return `<tr>${keys.map(k => `<td>${row[k] !== undefined ? row[k] : ''}</td>`).join('')}</tr>`;
+    }).join('');
+}
+</script>
 </body>
 </html>
