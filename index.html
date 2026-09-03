@@ -1,371 +1,1199 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Cobranza e Indicadores</title>
-    <!-- Librería SheetJS para lectura de Excel -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <link rel="stylesheet" href="./styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Plataforma Inteligente de Auditoría y Cobranza">
+<title>Cobranza Total | Plataforma Inteligente</title>
+
+<!-- LIBRERÍAS ESTABLES PARA GITHUB PAGES -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+:root{
+    --bg:#06101d;
+    --bg2:#0a1728;
+    --sidebar:#081522;
+    --panel:#0f1d30;
+    --panel2:#13263d;
+    --border:#203852;
+    --header:#0a1a2e;
+    --input:#09182a;
+
+    --blue:#1683ff;
+    --blue2:#0758bd;
+    --red:#ef3340;
+    --red2:#b91c2a;
+    --green:#16c784;
+    --yellow:#f5b942;
+
+    --text:#f4f7fb;
+    --muted:#8fa3bb;
+
+    --shadow:0 12px 35px rgba(0,0,0,.30);
+}
+
+body.light-theme{
+    --bg:#eef3f8;
+    --bg2:#e2e8f0;
+    --sidebar:#ffffff;
+    --panel:#ffffff;
+    --panel2:#f1f5f9;
+    --border:#cbd5e1;
+    --header:#ffffff;
+    --input:#ffffff;
+    --text:#0f172a;
+    --muted:#64748b;
+    --shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:linear-gradient(135deg,var(--bg),var(--bg2));
+    color:var(--text);
+    min-height:100vh;
+    transition:.3s;
+}
+
+button,input,select{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* LOGIN */
+#loginScreen{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        radial-gradient(circle at 20% 20%,rgba(22,131,255,.18),transparent 35%),
+        radial-gradient(circle at 80% 80%,rgba(239,51,64,.14),transparent 35%),
+        linear-gradient(135deg,#030914,#08182b);
+    z-index:9999;
+}
+
+.login-box{
+    width:min(420px,92%);
+    background:rgba(15,29,48,.95);
+    border:1px solid #25415f;
+    border-radius:20px;
+    padding:35px;
+    box-shadow:0 30px 80px rgba(0,0,0,.45);
+}
+
+.login-logo{
+    width:64px;
+    height:64px;
+    margin:auto;
+    border-radius:18px;
+    background:linear-gradient(135deg,var(--blue),var(--red));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    box-shadow:0 0 35px rgba(22,131,255,.3);
+}
+
+.login-box h1{
+    text-align:center;
+    margin-top:18px;
+    font-size:21px;
+}
+
+.login-box p{
+    text-align:center;
+    color:#8fa3bb;
+    font-size:12px;
+    margin-top:6px;
+    margin-bottom:28px;
+}
+
+.login-field{
+    margin-bottom:15px;
+}
+
+.login-field label{
+    display:block;
+    font-size:11px;
+    color:#8fa3bb;
+    margin-bottom:7px;
+}
+
+.login-field input{
+    width:100%;
+    padding:13px;
+    border-radius:9px;
+    border:1px solid #28425e;
+    background:#09182a;
+    color:#fff;
+    outline:none;
+}
+
+.login-field input:focus{
+    border-color:var(--blue);
+}
+
+.login-btn{
+    width:100%;
+    border:0;
+    padding:13px;
+    border-radius:9px;
+    color:white;
+    font-weight:bold;
+    background:linear-gradient(135deg,var(--blue),var(--blue2));
+    margin-top:8px;
+}
+
+.login-error{
+    color:#ff6670;
+    text-align:center;
+    font-size:11px;
+    margin-top:12px;
+}
+
+/* SIDEBAR */
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    width:250px;
+    background:var(--sidebar);
+    border-right:1px solid var(--border);
+    padding:20px 14px;
+    z-index:1000;
+    transition:.3s;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 8px 25px;
+}
+
+.logo-icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    background:linear-gradient(135deg,var(--blue),var(--red));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+}
+
+.logo h1{
+    font-size:15px;
+}
+
+.logo span{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.menu-title{
+    color:var(--muted);
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin:18px 10px 8px;
+}
+
+.nav-btn{
+    width:100%;
+    border:0;
+    background:transparent;
+    color:var(--muted);
+    padding:12px 13px;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:5px;
+    text-align:left;
+    transition:.2s;
+}
+
+.nav-btn:hover{
+    background:var(--panel2);
+    color:var(--text);
+}
+
+.nav-btn.active{
+    background:linear-gradient(90deg,rgba(22,131,255,.2),rgba(239,51,64,.1));
+    color:var(--blue);
+    font-weight:bold;
+    border-left:3px solid var(--blue);
+}
+
+.sidebar-bottom{
+    position:absolute;
+    bottom:20px;
+    left:14px;
+    right:14px;
+}
+
+/* MAIN */
+.main{
+    margin-left:250px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:72px;
+    background:rgba(7,19,33,.88);
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    position:sticky;
+    top:0;
+    z-index:900;
+    backdrop-filter:blur(15px);
+}
+
+body.light-theme .topbar{
+    background:rgba(255,255,255,.88);
+}
+
+.page-title h2{
+    font-size:19px;
+}
+
+.page-title p{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:3px;
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.icon-btn{
+    width:38px;
+    height:38px;
+    border:1px solid var(--border);
+    background:var(--panel);
+    color:var(--text);
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.mobile-menu{
+    display:none;
+}
+
+.content{
+    padding:25px;
+}
+
+.tab{
+    display:none;
+}
+
+.tab.active{
+    display:block;
+}
+
+/* BUTTONS & TOOLBAR */
+.btn{
+    border:0;
+    padding:10px 15px;
+    border-radius:8px;
+    color:#fff;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:.2s;
+}
+
+.btn-blue{ background:linear-gradient(135deg,var(--blue),var(--blue2)); }
+.btn-red{ background:linear-gradient(135deg,var(--red),var(--red2)); }
+.btn-green{ background:linear-gradient(135deg,#16c784,#0b9e68); }
+.btn-gray{ background:#334155; }
+
+.btn:hover{
+    transform:translateY(-1px);
+    filter:brightness(1.08);
+}
+
+.toolbar{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:13px;
+    padding:15px;
+    margin-bottom:20px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    box-shadow:var(--shadow);
+}
+
+.toolbar input, .toolbar select{
+    background:var(--input);
+    color:var(--text);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:10px 12px;
+    outline:none;
+}
+
+.toolbar .search{
+    flex:1;
+    min-width:220px;
+}
+
+.upload-box{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    box-shadow:var(--shadow);
+}
+
+.upload-info{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.upload-icon{
+    width:48px;
+    height:48px;
+    border-radius:12px;
+    background:rgba(22,131,255,.12);
+    color:var(--blue);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.file-name{ font-weight:bold; }
+.file-status{ color:var(--muted); font-size:12px; margin-top:4px; }
+
+/* KPIS */
+.kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.kpi{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:13px;
+    padding:19px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+}
+
+.kpi-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.kpi-icon{
+    width:36px;
+    height:36px;
+    border-radius:9px;
+    background:rgba(22,131,255,.12);
+    color:var(--blue);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.kpi-label{ color:var(--muted); font-size:11px; }
+.kpi-value{ font-size:24px; font-weight:bold; margin-top:5px; }
+.kpi-change{ font-size:10px; color:var(--green); margin-top:7px; }
+
+.card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:13px;
+    padding:18px;
+    box-shadow:var(--shadow);
+    margin-bottom:18px;
+}
+
+.card-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:17px;
+}
+
+.grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+
+.chart-container{
+    height:280px;
+    position:relative;
+    width:100%;
+}
+
+.table-wrap{
+    overflow:auto;
+    max-height:520px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:800px;
+}
+
+th{
+    background:var(--header);
+    color:var(--muted);
+    font-size:10px;
+    text-transform:uppercase;
+    padding:12px;
+    text-align:left;
+    position:sticky;
+    top:0;
+}
+
+td{
+    border-top:1px solid var(--border);
+    padding:11px 12px;
+    font-size:11px;
+}
+
+.pagination{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:15px;
+}
+
+.page-btn{
+    border:1px solid var(--border);
+    background:var(--panel2);
+    color:var(--text);
+    border-radius:7px;
+    padding:7px 11px;
+    cursor:pointer;
+}
+
+.page-btn.active{
+    background:var(--blue);
+    color:#fff;
+}
+
+.toast-container{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    z-index:10000;
+}
+
+.toast{
+    background:var(--panel);
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+    padding:13px 17px;
+    border-radius:10px;
+    font-size:12px;
+    margin-top:8px;
+}
+
+@media(max-width:1100px){
+    .kpi-grid{ grid-template-columns:repeat(2,1fr); }
+    .grid-2, .grid-3{ grid-template-columns:1fr; }
+}
+
+@media(max-width:800px){
+    .sidebar{ transform:translateX(-100%); }
+    .sidebar.open{ transform:translateX(0); }
+    .main{ margin-left:0; }
+    .mobile-menu{ display:flex; }
+    .topbar{ padding:0 15px; }
+    .content{ padding:15px; }
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>Sistema de Control y Cobranza de Gestores</h1>
-            <p>Carga el archivo <code>INDICADORES_COBRANZA.xlsx</code> para actualizar los tableros dinámicos.</p>
-        </header>
 
-        <!-- Selector de archivo -->
-        <section class="upload-section">
-            <label for="excelInput" class="drop-zone">
-                <span class="drop-zone-text">Haz clic aquí o arrastra tu archivo Excel</span>
-                <input type="file" id="excelInput" accept=".xlsx, .xls" />
-            </label>
-            <div id="fileInfo" class="file-info"></div>
-        </section>
+<!-- LOGIN -->
+<div id="loginScreen">
+    <div class="login-box">
+        <div class="login-logo">
+            <i data-lucide="shield-check"></i>
+        </div>
+        <h1>COBRANZA TOTAL</h1>
+        <p>Plataforma Inteligente de Auditoría</p>
 
-        <!-- Tablero 1: Resumen Semanal -->
-        <section class="card">
-            <h2>Resumen de Cobranza por Gestor (Días de la Semana)</h2>
-            <div id="weeklyTableContainer" class="table-responsive">
-                <p class="placeholder">Esperando carga de datos...</p>
+        <div class="login-field">
+            <label>USUARIO</label>
+            <input type="text" id="loginUser" value="admin">
+        </div>
+
+        <div class="login-field">
+            <label>CONTRASEÑA</label>
+            <input type="password" id="loginPassword" value="admin123">
+        </div>
+
+        <button class="login-btn" onclick="login()">INICIAR SESIÓN</button>
+        <div id="loginError" class="login-error"></div>
+    </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <div class="logo">
+        <div class="logo-icon"><i data-lucide="shield-check"></i></div>
+        <div>
+            <h1>COBRANZA TOTAL</h1>
+            <span>Plataforma Inteligente</span>
+        </div>
+    </div>
+
+    <div class="menu-title">Principal</div>
+    <button class="nav-btn active" data-tab="inicio"><i data-lucide="layout-dashboard"></i> Inicio</button>
+    <button class="nav-btn" data-tab="gestores"><i data-lucide="users"></i> Gestores</button>
+    <button class="nav-btn" data-tab="zonas"><i data-lucide="map"></i> Zonas</button>
+    <button class="nav-btn" data-tab="analisis"><i data-lucide="bar-chart-3"></i> Análisis</button>
+
+    <div class="menu-title">Operación</div>
+    <button class="nav-btn" data-tab="registros"><i data-lucide="database"></i> Registros</button>
+    <button class="nav-btn" data-tab="reportes"><i data-lucide="file-bar-chart"></i> Reportes</button>
+
+    <div class="menu-title">Sistema</div>
+    <button class="nav-btn" data-tab="configuracion"><i data-lucide="settings"></i> Configuración</button>
+    <button class="nav-btn" onclick="logout()"><i data-lucide="log-out"></i> Cerrar sesión</button>
+
+    <div class="sidebar-bottom">
+        <div class="card" style="padding:12px">
+            <div style="font-size:10px;color:var(--muted)">ARCHIVO ACTIVO</div>
+            <div id="sidebarFile" style="font-size:11px;margin-top:5px">Ningún archivo</div>
+        </div>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+    <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px">
+            <button class="icon-btn mobile-menu" id="mobileMenuBtn"><i data-lucide="menu"></i></button>
+            <div class="page-title">
+                <h2 id="pageTitle">Dashboard Ejecutivo</h2>
+                <p id="pageSubtitle">Centro de control de indicadores de cobranza</p>
+            </div>
+        </div>
+
+        <div class="top-actions">
+            <button class="icon-btn" onclick="showNotifications()"><i data-lucide="bell"></i></button>
+            <button class="icon-btn" onclick="switchTab('configuracion')"><i data-lucide="settings"></i></button>
+            <button class="btn btn-blue" onclick="document.getElementById('excelFile').click()">
+                <i data-lucide="upload"></i> Cargar Excel
+            </button>
+        </div>
+    </header>
+
+    <div class="content">
+        <!-- UPLOAD -->
+        <div class="upload-box">
+            <div class="upload-info">
+                <div class="upload-icon"><i data-lucide="file-spreadsheet"></i></div>
+                <div>
+                    <div class="file-name" id="fileName">No hay archivo cargado</div>
+                    <div class="file-status" id="fileStatus">Carga tu archivo Excel para comenzar</div>
+                </div>
+            </div>
+            <div>
+                <input type="file" id="excelFile" accept=".xlsx,.xls,.csv" hidden>
+                <button class="btn btn-blue" onclick="document.getElementById('excelFile').click()">
+                    <i data-lucide="folder-open"></i> Seleccionar archivo
+                </button>
+            </div>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="toolbar">
+            <input class="search" id="globalSearch" type="text" placeholder="Buscar cliente, gestor o zona...">
+            <select id="managerFilter"><option value="">Todos los gestores</option></select>
+            <select id="zoneFilter"><option value="">Todas las zonas</option></select>
+            <button class="btn btn-blue" onclick="applyFilters()"><i data-lucide="filter"></i> Filtrar</button>
+            <button class="btn btn-gray" onclick="clearFilters()"><i data-lucide="x"></i> Limpiar</button>
+        </div>
+
+        <!-- INICIO -->
+        <section class="tab active" id="tab-inicio">
+            <div class="kpi-grid">
+                <div class="kpi">
+                    <div class="kpi-head">
+                        <div>
+                            <div class="kpi-label">COBRANZA TOTAL</div>
+                            <div class="kpi-value" id="kpiTotal">$0.00</div>
+                        </div>
+                        <div class="kpi-icon"><i data-lucide="wallet"></i></div>
+                    </div>
+                    <div class="kpi-change">● Recaudación acumulada</div>
+                </div>
+
+                <div class="kpi">
+                    <div class="kpi-head">
+                        <div>
+                            <div class="kpi-label">TOTAL COMISIONES</div>
+                            <div class="kpi-value" id="kpiCommission">$0.00</div>
+                        </div>
+                        <div class="kpi-icon"><i data-lucide="badge-dollar-sign"></i></div>
+                    </div>
+                    <div class="kpi-change">Monto total comisionado</div>
+                </div>
+
+                <div class="kpi">
+                    <div class="kpi-head">
+                        <div>
+                            <div class="kpi-label">TRANSACCIONES</div>
+                            <div class="kpi-value" id="kpiTransactions">0</div>
+                        </div>
+                        <div class="kpi-icon"><i data-lucide="receipt"></i></div>
+                    </div>
+                    <div class="kpi-change">Pagos registrados</div>
+                </div>
+
+                <div class="kpi">
+                    <div class="kpi-head">
+                        <div>
+                            <div class="kpi-label">TICKET PROMEDIO</div>
+                            <div class="kpi-value" id="kpiAverage">$0.00</div>
+                        </div>
+                        <div class="kpi-icon"><i data-lucide="trending-up"></i></div>
+                    </div>
+                    <div class="kpi-change">Promedio por pago</div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title">
+                        <h3>Recaudación por Zona</h3>
+                        <span>Distribución</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="zoneChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <h3>Top 5 Gestores</h3>
+                        <span>Por cobranza</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="managerChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-title"><h3>Operaciones</h3></div>
+                    <div id="analysisOperations" style="font-size:28px;font-weight:bold">0</div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><h3>Gestores Activos</h3></div>
+                    <div id="analysisManagers" style="font-size:28px;font-weight:bold">0</div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><h3>Zonas Activas</h3></div>
+                    <div id="analysisZones" style="font-size:28px;font-weight:bold">0</div>
+                </div>
             </div>
         </section>
 
-        <!-- Tablero 2: Detalle por Fecha Exacta -->
-        <section class="card">
-            <h2>Detalle Analítico por Gestor y Fecha Exacta</h2>
-            <div id="detailedTableContainer" class="table-responsive">
-                <p class="placeholder">Esperando carga de datos...</p>
+        <!-- GESTORES -->
+        <section class="tab" id="tab-gestores">
+            <div class="card">
+                <div class="card-title">
+                    <h3>Rendimiento de Gestores</h3>
+                    <button class="btn btn-green" onclick="exportCurrentData()"><i data-lucide="download"></i> Exportar</button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Gestor</th>
+                                <th>Operaciones</th>
+                                <th>Cobranza Total</th>
+                                <th>Comisión</th>
+                                <th>Ticket Promedio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gestoresBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ZONAS -->
+        <section class="tab" id="tab-zonas">
+            <div class="card">
+                <div class="card-title">
+                    <h3>Detalle por Zonas</h3>
+                    <button class="btn btn-green" onclick="exportCurrentData()"><i data-lucide="download"></i> Exportar</button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Zona</th>
+                                <th>Operaciones</th>
+                                <th>Cobranza Total</th>
+                                <th>Ticket Promedio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="zonesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ANALISIS -->
+        <section class="tab" id="tab-analisis">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title"><h3>Distribución de Cobranza</h3></div>
+                    <div class="chart-container">
+                        <canvas id="resultChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><h3>Resumen Operativo</h3></div>
+                    <div id="analysisSummary">Carga un archivo para generar el análisis.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REGISTROS -->
+        <section class="tab" id="tab-registros">
+            <div class="card">
+                <div class="card-title">
+                    <h3>Registros de Pagos</h3>
+                    <span id="recordCount">0 registros</span>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cliente Único</th>
+                                <th>Gestor</th>
+                                <th>Zona</th>
+                                <th>Cobranza Total</th>
+                                <th>Comisión</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsBody"></tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <div id="paginationInfo" style="font-size:11px;color:var(--muted)">Página 1</div>
+                    <div id="paginationButtons" style="display:flex;gap:5px"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REPORTES -->
+        <section class="tab" id="tab-reportes">
+            <div class="card">
+                <div class="card-title"><h3>Generación de Reportes</h3></div>
+                <button class="btn btn-blue" onclick="exportCurrentData()"><i data-lucide="file-spreadsheet"></i> Exportar Excel</button>
+                <button class="btn btn-red" onclick="window.print()"><i data-lucide="printer"></i> Imprimir</button>
+            </div>
+        </section>
+
+        <!-- CONFIGURACION -->
+        <section class="tab" id="tab-configuracion">
+            <div class="card">
+                <div class="card-title"><h3>Configuración de datos</h3></div>
+                <button class="btn btn-red" onclick="clearData()">Limpiar Datos</button>
             </div>
         </section>
     </div>
+</main>
 
-    <script src="./app.js"></script>
-</body>
-</html>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+<div class="toast-container" id="toastContainer"></div>
 
-body {
-    background-color: #f4f7f6;
-    color: #333;
-    padding: 20px;
-}
+<script>
+let rawData = [];
+let filteredData = [];
+let charts = {};
+let currentPage = 1;
+let pageSize = 100;
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-.header h1 {
-    color: #1a365d;
-    font-size: 1.8rem;
-    margin-bottom: 5px;
-}
-
-.header p {
-    color: #718096;
-    font-size: 0.95rem;
-}
-
-.upload-section {
-    margin-bottom: 25px;
-    text-align: center;
-}
-
-.drop-zone {
-    display: inline-block;
-    padding: 20px 40px;
-    background-color: #ffffff;
-    border: 2px dashed #3182ce;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
-}
-
-.drop-zone:hover {
-    background-color: #ebf8ff;
-    border-color: #2b6cb0;
-}
-
-.drop-zone input[type="file"] {
-    display: none;
-}
-
-.drop-zone-text {
-    color: #2b6cb0;
-    font-weight: 600;
-}
-
-.file-info {
-    margin-top: 10px;
-    font-size: 0.9rem;
-    color: #2f855a;
-    font-weight: 500;
-}
-
-.card {
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    margin-bottom: 25px;
-}
-
-.card h2 {
-    font-size: 1.2rem;
-    color: #2d3748;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #edf2f7;
-    padding-bottom: 8px;
-}
-
-.table-responsive {
-    overflow-x: auto;
-}
-
-.placeholder {
-    color: #a0aec0;
-    font-style: italic;
-    text-align: center;
-    padding: 20px;
-}
-
-/* Tablas personalizadas */
-.custom-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.88rem;
-    text-align: left;
-}
-
-.custom-table th, .custom-table td {
-    padding: 10px 12px;
-    border: 1px solid #e2e8f0;
-}
-
-.custom-table thead th {
-    background-color: #2b6cb0;
-    color: #ffffff;
-    font-weight: 600;
-    text-align: center;
-}
-
-.custom-table tbody tr:nth-child(even) {
-    background-color: #f7fafc;
-}
-
-.custom-table tbody tr:hover {
-    background-color: #edf2f7;
-}
-
-.custom-table tfoot tr {
-    background-color: #e2e8f0;
-    font-weight: bold;
-}
-
-.text-right {
-    text-align: right;
-}
-
-.text-center {
-    text-align: center;
-}
 document.addEventListener("DOMContentLoaded", () => {
-    const excelInput = document.getElementById("excelInput");
-    if (excelInput) {
-        excelInput.addEventListener("change", handleFileUpload);
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    
+    if(localStorage.getItem("cobranza_session") === "active"){
+        document.getElementById("loginScreen").classList.add("hidden");
     }
+
+    initBlankCharts();
+
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const tab = btn.dataset.tab;
+            if(tab) switchTab(tab);
+        });
+    });
+
+    document.getElementById("mobileMenuBtn").addEventListener("click", () => {
+        document.getElementById("sidebar").classList.toggle("open");
+    });
+
+    document.getElementById("excelFile").addEventListener("change", handleFileSelect);
 });
 
-function handleFileUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
+function login(){
+    const user = document.getElementById("loginUser").value.trim();
+    const password = document.getElementById("loginPassword").value.trim();
 
-    document.getElementById("fileInfo").textContent = `Archivo cargado: ${file.name}`;
+    if(user === "admin" && password === "admin123"){
+        localStorage.setItem("cobranza_session", "active");
+        document.getElementById("loginScreen").classList.add("hidden");
+        showToast("Sesión iniciada correctamente.");
+    } else {
+        document.getElementById("loginError").innerText = "Usuario o contraseña incorrectos.";
+    }
+}
+
+function logout(){
+    localStorage.removeItem("cobranza_session");
+    location.reload();
+}
+
+function switchTab(tabId){
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === tabId);
+    });
+
+    document.querySelectorAll(".tab").forEach(tab => {
+        tab.classList.toggle("active", tab.id === `tab-${tabId}`);
+    });
+
+    document.getElementById("sidebar").classList.remove("open");
+}
+
+function initBlankCharts(){
+    const defaultOptions = { responsive: true, maintainAspectRatio: false };
+
+    const ctx1 = document.getElementById("zoneChart").getContext("2d");
+    charts.zone = new Chart(ctx1, {
+        type: 'doughnut',
+        data: { labels: ['Sin Datos'], datasets: [{ data: [1], backgroundColor: ['#203852'] }] },
+        options: defaultOptions
+    });
+
+    const ctx2 = document.getElementById("managerChart").getContext("2d");
+    charts.manager = new Chart(ctx2, {
+        type: 'bar',
+        data: { labels: ['Sin Datos'], datasets: [{ label: 'Cobranza', data: [0], backgroundColor: '#1683ff' }] },
+        options: defaultOptions
+    });
+
+    const ctx3 = document.getElementById("resultChart").getContext("2d");
+    charts.result = new Chart(ctx3, {
+        type: 'pie',
+        data: { labels: ['Cobranza', 'Comisiones'], datasets: [{ data: [0, 0], backgroundColor: ['#16c784', '#ef3340'] }] },
+        options: defaultOptions
+    });
+}
+
+function handleFileSelect(e){
+    const file = e.target.files[0];
+    if(!file) return;
+
+    document.getElementById("fileName").innerText = file.name;
+    document.getElementById("sidebarFile").innerText = file.name;
+    document.getElementById("fileStatus").innerText = "Procesando datos...";
 
     const reader = new FileReader();
+    reader.onload = function(evt) {
+        try {
+            const data = new Uint8Array(evt.target.result);
+            const workbook = XLSX.read(data, {type: 'array'});
+            const json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {defval: ""});
 
-    reader.onload = (e) => {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: "array" });
-
-        // Intentar leer la hoja PAGOS primero, o la primera hoja disponible
-        const sheetName = workbook.SheetNames.includes("PAGOS") ? "PAGOS" : workbook.SheetNames[0];
-        const rawData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-
-        renderWeeklyTable(rawData);
-        renderDetailedTable(rawData);
+            processRawData(json);
+            document.getElementById("fileStatus").innerText = `Cargado: ${rawData.length} registros.`;
+            showToast("Archivo cargado exitosamente.");
+        } catch(err) {
+            showToast("Error al leer el archivo Excel.");
+        }
     };
-
     reader.readAsArrayBuffer(file);
 }
 
-// Formato de moneda MXN
-const formatCurrency = (val) => 
-    new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(val || 0);
-
-// Función auxiliar para extraer fecha y día
-function parseGestionDate(dateStr) {
-    if (!dateStr) return { formattedDate: "Sin Fecha", dayName: "" };
-
-    const daysMap = ["DOMINGO", "LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES", "SÁBADO"];
-    let dateObj = null;
-
-    const str = String(dateStr).trim().split(" ")[0];
-
-    // Formato DD/MM/YYYY
-    if (str.includes("/")) {
-        const p = str.split("/");
-        if (p.length === 3) dateObj = new Date(p[2], p[1] - 1, p[0]);
-    } 
-    // Formato YYYY-MM-DD
-    else if (str.includes("-")) {
-        const p = str.split("-");
-        if (p.length === 3) dateObj = new Date(p[0], p[1] - 1, p[2]);
-    }
-
-    if (dateObj && !isNaN(dateObj.getTime())) {
-        const yyyy = dateObj.getFullYear();
-        const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
-        const dd = String(dateObj.getDate()).padStart(2, '0');
-        return {
-            formattedDate: `${yyyy}-${mm}-${dd}`,
-            dayName: daysMap[dateObj.getDay()]
+function processRawData(data){
+    rawData = data.map(item => {
+        const getVal = (keys) => {
+            const key = Object.keys(item).find(k => keys.some(k2 => k.toLowerCase().includes(k2)));
+            return key ? item[key] : "";
         };
+
+        const montoStr = String(getVal(["monto", "cobranza", "total", "pago"])).replace(/[^0-9.-]+/g, "");
+        const comisionStr = String(getVal(["comision", "comisión", "fee"])).replace(/[^0-9.-]+/g, "");
+
+        return {
+            cliente: getVal(["cliente", "nombre", "usuario"]) || "S/D",
+            gestor: getVal(["gestor", "agente"]) || "SIN ASIGNAR",
+            zona: getVal(["zona", "region"]) || "GENERAL",
+            monto: parseFloat(montoStr) || 0,
+            comision: parseFloat(comisionStr) || 0
+        };
+    });
+
+    filteredData = [...rawData];
+    populateFilters();
+    updateDashboard();
+}
+
+function populateFilters(){
+    const mgrSel = document.getElementById("managerFilter");
+    const znSel = document.getElementById("zoneFilter");
+
+    const managers = [...new Set(rawData.map(d => d.gestor))].sort();
+    const zones = [...new Set(rawData.map(d => d.zona))].sort();
+
+    mgrSel.innerHTML = '<option value="">Todos los gestores</option>';
+    znSel.innerHTML = '<option value="">Todas las zonas</option>';
+
+    managers.forEach(m => mgrSel.innerHTML += `<option value="${m}">${m}</option>`);
+    zones.forEach(z => znSel.innerHTML += `<option value="${z}">${z}</option>`);
+}
+
+function applyFilters(){
+    const search = document.getElementById("globalSearch").value.toLowerCase();
+    const mgr = document.getElementById("managerFilter").value;
+    const zn = document.getElementById("zoneFilter").value;
+
+    filteredData = rawData.filter(i => {
+        const matchSearch = i.cliente.toLowerCase().includes(search) || i.gestor.toLowerCase().includes(search) || i.zona.toLowerCase().includes(search);
+        const matchMgr = !mgr || i.gestor === mgr;
+        const matchZn = !zn || i.zona === zn;
+        return matchSearch && matchMgr && matchZn;
+    });
+
+    currentPage = 1;
+    updateDashboard();
+}
+
+function clearFilters(){
+    document.getElementById("globalSearch").value = "";
+    document.getElementById("managerFilter").value = "";
+    document.getElementById("zoneFilter").value = "";
+    filteredData = [...rawData];
+    currentPage = 1;
+    updateDashboard();
+}
+
+function updateDashboard(){
+    renderKPIs();
+    renderCharts();
+    renderGestoresTable();
+    renderZonesTable();
+    renderRecordsTable();
+}
+
+function formatMoney(val){
+    return new Intl.NumberFormat("es-MX", {style: "currency", currency: "MXN"}).format(val);
+}
+
+function renderKPIs(){
+    const totalCobranza = filteredData.reduce((acc, i) => acc + i.monto, 0);
+    const totalComision = filteredData.reduce((acc, i) => acc + i.comision, 0);
+    const totalTx = filteredData.length;
+
+    document.getElementById("kpiTotal").innerText = formatMoney(totalCobranza);
+    document.getElementById("kpiCommission").innerText = formatMoney(totalComision);
+    document.getElementById("kpiTransactions").innerText = totalTx;
+    document.getElementById("kpiAverage").innerText = formatMoney(totalTx ? totalCobranza / totalTx : 0);
+
+    document.getElementById("analysisOperations").innerText = totalTx;
+    document.getElementById("analysisManagers").innerText = new Set(filteredData.map(i=>i.gestor)).size;
+    document.getElementById("analysisZones").innerText = new Set(filteredData.map(i=>i.zona)).size;
+}
+
+function renderCharts(){
+    const zonesMap = {};
+    filteredData.forEach(i => zonesMap[i.zona] = (zonesMap[i.zona] || 0) + i.monto);
+    charts.zone.data.labels = Object.keys(zonesMap);
+    charts.zone.data.datasets[0].data = Object.values(zonesMap);
+    charts.zone.data.datasets[0].backgroundColor = ['#1683ff', '#ef3340', '#16c784', '#f5b942', '#8fa3bb'];
+    charts.zone.update();
+
+    const mgrMap = {};
+    filteredData.forEach(i => mgrMap[i.gestor] = (mgrMap[i.gestor] || 0) + i.monto);
+    const topMgrs = Object.entries(mgrMap).sort((a,b) => b[1] - a[1]).slice(0, 5);
+
+    charts.manager.data.labels = topMgrs.map(m => m[0]);
+    charts.manager.data.datasets[0].data = topMgrs.map(m => m[1]);
+    charts.manager.update();
+
+    charts.result.data.datasets[0].data = [
+        filteredData.reduce((a, b) => a + b.monto, 0),
+        filteredData.reduce((a, b) => a + b.comision, 0)
+    ];
+    charts.result.update();
+}
+
+function renderGestoresTable(){
+    const mgrMap = {};
+    filteredData.forEach(i => {
+        if(!mgrMap[i.gestor]) mgrMap[i.gestor] = { ops: 0, total: 0, comision: 0 };
+        mgrMap[i.gestor].ops++;
+        mgrMap[i.gestor].total += i.monto;
+        mgrMap[i.gestor].comision += i.comision;
+    });
+
+    const tbody = document.getElementById("gestoresBody");
+    tbody.innerHTML = "";
+    Object.entries(mgrMap).forEach(([g, d], idx) => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${idx+1}</td>
+                <td><b>${g}</b></td>
+                <td>${d.ops}</td>
+                <td>${formatMoney(d.total)}</td>
+                <td>${formatMoney(d.comision)}</td>
+                <td>${formatMoney(d.ops ? d.total / d.ops : 0)}</td>
+            </tr>
+        `;
+    });
+}
+
+function renderZonesTable(){
+    const znMap = {};
+    filteredData.forEach(i => {
+        if(!znMap[i.zona]) znMap[i.zona] = { ops: 0, total: 0 };
+        znMap[i.zona].ops++;
+        znMap[i.zona].total += i.monto;
+    });
+
+    const tbody = document.getElementById("zonesBody");
+    tbody.innerHTML = "";
+    Object.entries(znMap).forEach(([z, d]) => {
+        tbody.innerHTML += `
+            <tr>
+                <td><b>${z}</b></td>
+                <td>${d.ops}</td>
+                <td>${formatMoney(d.total)}</td>
+                <td>${formatMoney(d.ops ? d.total / d.ops : 0)}</td>
+            </tr>
+        `;
+    });
+}
+
+function renderRecordsTable(){
+    const total = filteredData.length;
+    document.getElementById("recordCount").innerText = `${total} registros`;
+
+    const totalPages = Math.ceil(total / pageSize) || 1;
+    const start = (currentPage - 1) * pageSize;
+    const pageItems = filteredData.slice(start, start + pageSize);
+
+    const tbody = document.getElementById("recordsBody");
+    tbody.innerHTML = pageItems.map(i => `
+        <tr>
+            <td>${i.cliente}</td>
+            <td>${i.gestor}</td>
+            <td>${i.zona}</td>
+            <td>${formatMoney(i.monto)}</td>
+            <td>${formatMoney(i.comision)}</td>
+        </tr>
+    `).join("");
+
+    document.getElementById("paginationInfo").innerText = `Página ${currentPage} de ${totalPages}`;
+    
+    const btns = document.getElementById("paginationButtons");
+    btns.innerHTML = "";
+    
+    if(currentPage > 1){
+        btns.innerHTML += `<button class="page-btn" onclick="changePage(${currentPage - 1})">Anterior</button>`;
     }
-
-    return { formattedDate: "Sin Fecha", dayName: "" };
+    if(currentPage < totalPages){
+        btns.innerHTML += `<button class="page-btn" onclick="changePage(${currentPage + 1})">Siguiente</button>`;
+    }
 }
 
-// 1. Genera la Tabla por Día de la Semana
-function renderWeeklyTable(data) {
-    const gestores = {};
-    const dayTotals = { "LUNES": 0, "MARTES": 0, "MIÉRCOLES": 0, "JUEVES": 0, "VIERNES": 0, "SÁBADO": 0, "DOMINGO": 0 };
-    let grandTotal = 0;
-
-    data.forEach(row => {
-        const gestor = (row.Gestor || "SIN GESTOR").trim();
-        const monto = parseFloat(row.Cobranza_Total || row.Monto_Pagado || 0);
-        const dateVal = row.Fecha_de_Gestion || row["Fecha Gestion"] || row.Fecha_Recepción;
-        
-        const { dayName } = parseGestionDate(dateVal);
-
-        if (!gestores[gestor]) {
-            gestores[gestor] = { "LUNES": 0, "MARTES": 0, "MIÉRCOLES": 0, "JUEVES": 0, "VIERNES": 0, "SÁBADO": 0, "DOMINGO": 0, total: 0 };
-        }
-
-        if (dayName && gestores[gestor][dayName] !== undefined) {
-            gestores[gestor][dayName] += monto;
-            gestores[gestor].total += monto;
-            dayTotals[dayName] += monto;
-            grandTotal += monto;
-        }
-    });
-
-    let html = `<table class="custom-table">
-        <thead>
-            <tr>
-                <th>Gestor</th>
-                <th>Lunes</th>
-                <th>Martes</th>
-                <th>Miércoles</th>
-                <th>Jueves</th>
-                <th>Viernes</th>
-                <th>Sábado</th>
-                <th>Domingo</th>
-                <th>Total General</th>
-            </tr>
-        </thead>
-        <tbody>`;
-
-    Object.keys(gestores).sort().forEach(g => {
-        html += `<tr>
-            <td><strong>${g}</strong></td>
-            <td class="text-right">${formatCurrency(gestores[g]["LUNES"])}</td>
-            <td class="text-right">${formatCurrency(gestores[g]["MARTES"])}</td>
-            <td class="text-right">${formatCurrency(gestores[g]["MIÉRCOLES"])}</td>
-            <td class="text-right">${formatCurrency(gestores[g]["JUEVES"])}</td>
-            <td class="text-right">${formatCurrency(gestores[g]["VIERNES"])}</td>
-            <td class="text-right">${formatCurrency(gestores[g]["SÁBADO"])}</td>
-            <td class="text-right">${formatCurrency(gestores[g]["DOMINGO"])}</td>
-            <td class="text-right"><strong>${formatCurrency(gestores[g].total)}</strong></td>
-        </tr>`;
-    });
-
-    html += `</tbody>
-        <tfoot>
-            <tr>
-                <th>TOTAL GENERAL</th>
-                <th class="text-right">${formatCurrency(dayTotals["LUNES"])}</th>
-                <th class="text-right">${formatCurrency(dayTotals["MARTES"])}</th>
-                <th class="text-right">${formatCurrency(dayTotals["MIÉRCOLES"])}</th>
-                <th class="text-right">${formatCurrency(dayTotals["JUEVES"])}</th>
-                <th class="text-right">${formatCurrency(dayTotals["VIERNES"])}</th>
-                <th class="text-right">${formatCurrency(dayTotals["SÁBADO"])}</th>
-                <th class="text-right">${formatCurrency(dayTotals["DOMINGO"])}</th>
-                <th class="text-right">${formatCurrency(grandTotal)}</th>
-            </tr>
-        </tfoot>
-    </table>`;
-
-    document.getElementById("weeklyTableContainer").innerHTML = html;
+function changePage(page){
+    currentPage = page;
+    renderRecordsTable();
 }
 
-// 2. Genera la Tabla por Fecha Exacta
-function renderDetailedTable(data) {
-    const records = {};
-
-    data.forEach(row => {
-        const gestor = (row.Gestor || "SIN GESTOR").trim();
-        const monto = parseFloat(row.Cobranza_Total || row.Monto_Pagado || 0);
-        const dateVal = row.Fecha_de_Gestion || row["Fecha Gestion"] || row.Fecha_Recepción;
-        
-        const { formattedDate } = parseGestionDate(dateVal);
-
-        const key = `${gestor}_${formattedDate}`;
-        if (!records[key]) {
-            records[key] = { gestor, fecha: formattedDate, ops: 0, total: 0 };
-        }
-
-        records[key].ops += 1;
-        records[key].total += monto;
-    });
-
-    let html = `<table class="custom-table">
-        <thead>
-            <tr>
-                <th>Gestor</th>
-                <th>Fecha Exacta</th>
-                <th>Operaciones</th>
-                <th>Cobranza Total</th>
-            </tr>
-        </thead>
-        <tbody>`;
-
-    const sortedList = Object.values(records).sort((a, b) => 
-        a.gestor.localeCompare(b.gestor) || a.fecha.localeCompare(b.fecha)
-    );
-
-    sortedList.forEach(rec => {
-        html += `<tr>
-            <td>${rec.gestor}</td>
-            <td class="text-center">${rec.fecha}</td>
-            <td class="text-center">${rec.ops}</td>
-            <td class="text-right">${formatCurrency(rec.total)}</td>
-        </tr>`;
-    });
-
-    html += `</tbody></table>`;
-    document.getElementById("detailedTableContainer").innerHTML = html;
+function exportCurrentData(){
+    if(!filteredData.length){
+        showToast("No hay datos para exportar.");
+        return;
+    }
+    const ws = XLSX.utils.json_to_sheet(filteredData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Cobranza");
+    XLSX.writeFile(wb, "Reporte_Cobranza.xlsx");
 }
+
+function clearData(){
+    rawData = [];
+    filteredData = [];
+    document.getElementById("fileName").innerText = "No hay archivo cargado";
+    document.getElementById("sidebarFile").innerText = "Ningún archivo";
+    document.getElementById("fileStatus").innerText = "Carga tu archivo Excel para comenzar";
+    document.getElementById("excelFile").value = "";
+    updateDashboard();
+    showToast("Datos limpiados.");
+}
+
+function showToast(msg){
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerText = msg;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+function showNotifications(){
+    showToast("Sin notificaciones pendientes.");
+}
+</script>
+
+</body>
+</html>
