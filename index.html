@@ -6,9 +6,9 @@
 <meta name="description" content="Plataforma Inteligente de Auditoría y Cobranza">
 <title>Cobranza Total | Plataforma Inteligente</title>
 
-<!-- LIBRERÍAS -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- LIBRERÍAS ESTABLES PARA GITHUB PAGES -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
@@ -75,10 +75,7 @@ button{
     display:none!important;
 }
 
-/* =========================
-   LOGIN
-========================= */
-
+/* LOGIN */
 #loginScreen{
     position:fixed;
     inset:0;
@@ -171,10 +168,7 @@ button{
     margin-top:12px;
 }
 
-/* =========================
-   SIDEBAR
-========================= */
-
+/* SIDEBAR */
 .sidebar{
     position:fixed;
     left:0;
@@ -257,10 +251,7 @@ button{
     right:14px;
 }
 
-/* =========================
-   MAIN
-========================= */
-
+/* MAIN */
 .main{
     margin-left:250px;
     min-height:100vh;
@@ -316,10 +307,6 @@ body.light-theme .topbar{
     display:none;
 }
 
-/* =========================
-   CONTENT
-========================= */
-
 .content{
     padding:25px;
 }
@@ -332,10 +319,7 @@ body.light-theme .topbar{
     display:block;
 }
 
-/* =========================
-   BUTTONS
-========================= */
-
+/* BUTTONS & TOOLBAR */
 .btn{
     border:0;
     padding:10px 15px;
@@ -348,30 +332,15 @@ body.light-theme .topbar{
     transition:.2s;
 }
 
-.btn-blue{
-    background:linear-gradient(135deg,var(--blue),var(--blue2));
-}
-
-.btn-red{
-    background:linear-gradient(135deg,var(--red),var(--red2));
-}
-
-.btn-green{
-    background:linear-gradient(135deg,#16c784,#0b9e68);
-}
-
-.btn-gray{
-    background:#334155;
-}
+.btn-blue{ background:linear-gradient(135deg,var(--blue),var(--blue2)); }
+.btn-red{ background:linear-gradient(135deg,var(--red),var(--red2)); }
+.btn-green{ background:linear-gradient(135deg,#16c784,#0b9e68); }
+.btn-gray{ background:#334155; }
 
 .btn:hover{
     transform:translateY(-1px);
     filter:brightness(1.08);
 }
-
-/* =========================
-   TOOLBAR
-========================= */
 
 .toolbar{
     background:var(--panel);
@@ -386,8 +355,7 @@ body.light-theme .topbar{
     box-shadow:var(--shadow);
 }
 
-.toolbar input,
-.toolbar select{
+.toolbar input, .toolbar select{
     background:var(--input);
     color:var(--text);
     border:1px solid var(--border);
@@ -396,19 +364,10 @@ body.light-theme .topbar{
     outline:none;
 }
 
-.toolbar input:focus,
-.toolbar select:focus{
-    border-color:var(--blue);
-}
-
 .toolbar .search{
     flex:1;
     min-width:220px;
 }
-
-/* =========================
-   UPLOAD
-========================= */
 
 .upload-box{
     background:var(--panel);
@@ -440,20 +399,10 @@ body.light-theme .topbar{
     justify-content:center;
 }
 
-.file-name{
-    font-weight:bold;
-}
+.file-name{ font-weight:bold; }
+.file-status{ color:var(--muted); font-size:12px; margin-top:4px; }
 
-.file-status{
-    color:var(--muted);
-    font-size:12px;
-    margin-top:4px;
-}
-
-/* =========================
-   KPI
-========================= */
-
+/* KPIS */
 .kpi-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
@@ -469,25 +418,6 @@ body.light-theme .topbar{
     box-shadow:var(--shadow);
     position:relative;
     overflow:hidden;
-}
-
-.kpi::after{
-    content:"";
-    position:absolute;
-    width:90px;
-    height:90px;
-    border-radius:50%;
-    right:-40px;
-    top:-40px;
-    background:rgba(22,131,255,.08);
-}
-
-.kpi.red::after{
-    background:rgba(239,51,64,.08);
-}
-
-.kpi.green::after{
-    background:rgba(22,199,132,.08);
 }
 
 .kpi-head{
@@ -507,36 +437,9 @@ body.light-theme .topbar{
     justify-content:center;
 }
 
-.kpi.red .kpi-icon{
-    background:rgba(239,51,64,.12);
-    color:var(--red);
-}
-
-.kpi.green .kpi-icon{
-    background:rgba(22,199,132,.12);
-    color:var(--green);
-}
-
-.kpi-label{
-    color:var(--muted);
-    font-size:11px;
-}
-
-.kpi-value{
-    font-size:24px;
-    font-weight:bold;
-    margin-top:5px;
-}
-
-.kpi-change{
-    font-size:10px;
-    color:var(--green);
-    margin-top:7px;
-}
-
-/* =========================
-   CARDS
-========================= */
+.kpi-label{ color:var(--muted); font-size:11px; }
+.kpi-value{ font-size:24px; font-weight:bold; margin-top:5px; }
+.kpi-change{ font-size:10px; color:var(--green); margin-top:7px; }
 
 .card{
     background:var(--panel);
@@ -554,35 +457,14 @@ body.light-theme .topbar{
     margin-bottom:17px;
 }
 
-.card-title h3{
-    font-size:14px;
-}
-
-.card-title span{
-    color:var(--muted);
-    font-size:10px;
-}
-
-.grid-2{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
-}
-
-.grid-3{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:18px;
-}
+.grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
 
 .chart-container{
-    height:300px;
+    height:280px;
     position:relative;
+    width:100%;
 }
-
-/* =========================
-   TABLES
-========================= */
 
 .table-wrap{
     overflow:auto;
@@ -604,7 +486,6 @@ th{
     text-align:left;
     position:sticky;
     top:0;
-    z-index:2;
 }
 
 td{
@@ -613,53 +494,11 @@ td{
     font-size:11px;
 }
 
-tr:hover td{
-    background:var(--panel2);
-}
-
-.badge{
-    display:inline-block;
-    padding:4px 8px;
-    border-radius:20px;
-    font-size:9px;
-    font-weight:bold;
-}
-
-.badge-blue{
-    color:#61adff;
-    background:rgba(22,131,255,.12);
-}
-
-.badge-green{
-    color:#43e0a4;
-    background:rgba(22,199,132,.12);
-}
-
-.badge-red{
-    color:#ff6a74;
-    background:rgba(239,51,64,.12);
-}
-
-/* =========================
-   PAGINATION
-========================= */
-
 .pagination{
     display:flex;
     justify-content:space-between;
     align-items:center;
     margin-top:15px;
-    gap:10px;
-}
-
-.pagination-info{
-    color:var(--muted);
-    font-size:11px;
-}
-
-.pagination-buttons{
-    display:flex;
-    gap:6px;
 }
 
 .page-btn{
@@ -675,51 +514,6 @@ tr:hover td{
     color:#fff;
 }
 
-/* =========================
-   SETTINGS
-========================= */
-
-.setting-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:16px 0;
-    border-bottom:1px solid var(--border);
-}
-
-.switch{
-    width:42px;
-    height:22px;
-    background:#263c57;
-    border-radius:20px;
-    position:relative;
-    cursor:pointer;
-}
-
-.switch::after{
-    content:"";
-    width:16px;
-    height:16px;
-    border-radius:50%;
-    background:white;
-    position:absolute;
-    top:3px;
-    left:3px;
-    transition:.2s;
-}
-
-.switch.on{
-    background:var(--blue);
-}
-
-.switch.on::after{
-    left:23px;
-}
-
-/* =========================
-   NOTIFICATION
-========================= */
-
 .toast-container{
     position:fixed;
     right:20px;
@@ -733,78 +527,24 @@ tr:hover td{
     box-shadow:var(--shadow);
     padding:13px 17px;
     border-radius:10px;
-    min-width:260px;
-    margin-top:8px;
     font-size:12px;
-    animation:toastIn .3s ease;
+    margin-top:8px;
 }
-
-@keyframes toastIn{
-    from{
-        transform:translateX(30px);
-        opacity:0;
-    }
-    to{
-        transform:translateX(0);
-        opacity:1;
-    }
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
 
 @media(max-width:1100px){
-    .kpi-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .grid-2,
-    .grid-3{
-        grid-template-columns:1fr;
-    }
+    .kpi-grid{ grid-template-columns:repeat(2,1fr); }
+    .grid-2, .grid-3{ grid-template-columns:1fr; }
 }
 
 @media(max-width:800px){
-    .sidebar{
-        transform:translateX(-100%);
-    }
-
-    .sidebar.open{
-        transform:translateX(0);
-    }
-
-    .main{
-        margin-left:0;
-    }
-
-    .mobile-menu{
-        display:flex;
-    }
-
-    .topbar{
-        padding:0 15px;
-    }
-
-    .content{
-        padding:15px;
-    }
-
-    .upload-box{
-        flex-direction:column;
-        align-items:flex-start;
-    }
-
-    .kpi-grid{
-        grid-template-columns:1fr;
-    }
-
-    .top-actions .btn{
-        display:none;
-    }
+    .sidebar{ transform:translateX(-100%); }
+    .sidebar.open{ transform:translateX(0); }
+    .main{ margin-left:0; }
+    .mobile-menu{ display:flex; }
+    .topbar{ padding:0 15px; }
+    .content{ padding:15px; }
 }
 </style>
-
 </head>
 
 <body>
@@ -820,12 +560,12 @@ tr:hover td{
 
         <div class="login-field">
             <label>USUARIO</label>
-            <input type="text" id="loginUser" placeholder="Ingrese su usuario">
+            <input type="text" id="loginUser" value="admin">
         </div>
 
         <div class="login-field">
             <label>CONTRASEÑA</label>
-            <input type="password" id="loginPassword" placeholder="Ingrese su contraseña">
+            <input type="password" id="loginPassword" value="admin123">
         </div>
 
         <button class="login-btn" onclick="login()">INICIAR SESIÓN</button>
@@ -836,9 +576,7 @@ tr:hover td{
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
     <div class="logo">
-        <div class="logo-icon">
-            <i data-lucide="shield-check"></i>
-        </div>
+        <div class="logo-icon"><i data-lucide="shield-check"></i></div>
         <div>
             <h1>COBRANZA TOTAL</h1>
             <span>Plataforma Inteligente</span>
@@ -846,34 +584,18 @@ tr:hover td{
     </div>
 
     <div class="menu-title">Principal</div>
-    <button class="nav-btn active" data-tab="inicio">
-        <i data-lucide="layout-dashboard"></i> Inicio
-    </button>
-    <button class="nav-btn" data-tab="gestores">
-        <i data-lucide="users"></i> Gestores
-    </button>
-    <button class="nav-btn" data-tab="zonas">
-        <i data-lucide="map"></i> Zonas
-    </button>
-    <button class="nav-btn" data-tab="analisis">
-        <i data-lucide="bar-chart-3"></i> Análisis
-    </button>
+    <button class="nav-btn active" data-tab="inicio"><i data-lucide="layout-dashboard"></i> Inicio</button>
+    <button class="nav-btn" data-tab="gestores"><i data-lucide="users"></i> Gestores</button>
+    <button class="nav-btn" data-tab="zonas"><i data-lucide="map"></i> Zonas</button>
+    <button class="nav-btn" data-tab="analisis"><i data-lucide="bar-chart-3"></i> Análisis</button>
 
     <div class="menu-title">Operación</div>
-    <button class="nav-btn" data-tab="registros">
-        <i data-lucide="database"></i> Registros
-    </button>
-    <button class="nav-btn" data-tab="reportes">
-        <i data-lucide="file-bar-chart"></i> Reportes
-    </button>
+    <button class="nav-btn" data-tab="registros"><i data-lucide="database"></i> Registros</button>
+    <button class="nav-btn" data-tab="reportes"><i data-lucide="file-bar-chart"></i> Reportes</button>
 
     <div class="menu-title">Sistema</div>
-    <button class="nav-btn" data-tab="configuracion">
-        <i data-lucide="settings"></i> Configuración
-    </button>
-    <button class="nav-btn" onclick="logout()">
-        <i data-lucide="log-out"></i> Cerrar sesión
-    </button>
+    <button class="nav-btn" data-tab="configuracion"><i data-lucide="settings"></i> Configuración</button>
+    <button class="nav-btn" onclick="logout()"><i data-lucide="log-out"></i> Cerrar sesión</button>
 
     <div class="sidebar-bottom">
         <div class="card" style="padding:12px">
@@ -887,9 +609,7 @@ tr:hover td{
 <main class="main">
     <header class="topbar">
         <div style="display:flex;align-items:center;gap:12px">
-            <button class="icon-btn mobile-menu" id="mobileMenuBtn">
-                <i data-lucide="menu"></i>
-            </button>
+            <button class="icon-btn mobile-menu" id="mobileMenuBtn"><i data-lucide="menu"></i></button>
             <div class="page-title">
                 <h2 id="pageTitle">Dashboard Ejecutivo</h2>
                 <p id="pageSubtitle">Centro de control de indicadores de cobranza</p>
@@ -897,12 +617,8 @@ tr:hover td{
         </div>
 
         <div class="top-actions">
-            <button class="icon-btn" onclick="showNotifications()">
-                <i data-lucide="bell"></i>
-            </button>
-            <button class="icon-btn" onclick="switchTab('configuracion')">
-                <i data-lucide="settings"></i>
-            </button>
+            <button class="icon-btn" onclick="showNotifications()"><i data-lucide="bell"></i></button>
+            <button class="icon-btn" onclick="switchTab('configuracion')"><i data-lucide="settings"></i></button>
             <button class="btn btn-blue" onclick="document.getElementById('excelFile').click()">
                 <i data-lucide="upload"></i> Cargar Excel
             </button>
@@ -913,9 +629,7 @@ tr:hover td{
         <!-- UPLOAD -->
         <div class="upload-box">
             <div class="upload-info">
-                <div class="upload-icon">
-                    <i data-lucide="file-spreadsheet"></i>
-                </div>
+                <div class="upload-icon"><i data-lucide="file-spreadsheet"></i></div>
                 <div>
                     <div class="file-name" id="fileName">No hay archivo cargado</div>
                     <div class="file-status" id="fileStatus">Carga tu archivo Excel para comenzar</div>
@@ -932,20 +646,10 @@ tr:hover td{
         <!-- FILTROS -->
         <div class="toolbar">
             <input class="search" id="globalSearch" type="text" placeholder="Buscar cliente, gestor o zona...">
-            <input type="date" id="dateFrom">
-            <input type="date" id="dateTo">
-            <select id="managerFilter">
-                <option value="">Todos los gestores</option>
-            </select>
-            <select id="zoneFilter">
-                <option value="">Todas las zonas</option>
-            </select>
-            <button class="btn btn-blue" onclick="applyFilters()">
-                <i data-lucide="filter"></i> Filtrar
-            </button>
-            <button class="btn btn-gray" onclick="clearFilters()">
-                <i data-lucide="x"></i> Limpiar
-            </button>
+            <select id="managerFilter"><option value="">Todos los gestores</option></select>
+            <select id="zoneFilter"><option value="">Todas las zonas</option></select>
+            <button class="btn btn-blue" onclick="applyFilters()"><i data-lucide="filter"></i> Filtrar</button>
+            <button class="btn btn-gray" onclick="clearFilters()"><i data-lucide="x"></i> Limpiar</button>
         </div>
 
         <!-- INICIO -->
@@ -962,7 +666,7 @@ tr:hover td{
                     <div class="kpi-change">● Recaudación acumulada</div>
                 </div>
 
-                <div class="kpi red">
+                <div class="kpi">
                     <div class="kpi-head">
                         <div>
                             <div class="kpi-label">TOTAL COMISIONES</div>
@@ -973,7 +677,7 @@ tr:hover td{
                     <div class="kpi-change">Monto total comisionado</div>
                 </div>
 
-                <div class="kpi green">
+                <div class="kpi">
                     <div class="kpi-head">
                         <div>
                             <div class="kpi-label">TRANSACCIONES</div>
@@ -984,7 +688,7 @@ tr:hover td{
                     <div class="kpi-change">Pagos registrados</div>
                 </div>
 
-                <div class="kpi red">
+                <div class="kpi">
                     <div class="kpi-head">
                         <div>
                             <div class="kpi-label">TICKET PROMEDIO</div>
@@ -1039,9 +743,7 @@ tr:hover td{
             <div class="card">
                 <div class="card-title">
                     <h3>Rendimiento de Gestores</h3>
-                    <button class="btn btn-green" onclick="exportManagers()">
-                        <i data-lucide="download"></i> Exportar
-                    </button>
+                    <button class="btn btn-green" onclick="exportCurrentData()"><i data-lucide="download"></i> Exportar</button>
                 </div>
                 <div class="table-wrap">
                     <table>
@@ -1066,9 +768,7 @@ tr:hover td{
             <div class="card">
                 <div class="card-title">
                     <h3>Detalle por Zonas</h3>
-                    <button class="btn btn-green" onclick="exportZones()">
-                        <i data-lucide="download"></i> Exportar
-                    </button>
+                    <button class="btn btn-green" onclick="exportCurrentData()"><i data-lucide="download"></i> Exportar</button>
                 </div>
                 <div class="table-wrap">
                     <table>
@@ -1090,17 +790,13 @@ tr:hover td{
         <section class="tab" id="tab-analisis">
             <div class="grid-2">
                 <div class="card">
-                    <div class="card-title">
-                        <h3>Distribución de Cobranza</h3>
-                    </div>
+                    <div class="card-title"><h3>Distribución de Cobranza</h3></div>
                     <div class="chart-container">
                         <canvas id="resultChart"></canvas>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-title">
-                        <h3>Resumen Operativo</h3>
-                    </div>
+                    <div class="card-title"><h3>Resumen Operativo</h3></div>
                     <div id="analysisSummary">Carga un archivo para generar el análisis.</div>
                 </div>
             </div>
@@ -1128,100 +824,64 @@ tr:hover td{
                     </table>
                 </div>
                 <div class="pagination">
-                    <div class="pagination-info" id="paginationInfo">Página 1</div>
-                    <div class="pagination-buttons" id="paginationButtons"></div>
+                    <div id="paginationInfo" style="font-size:11px;color:var(--muted)">Página 1</div>
+                    <div id="paginationButtons" style="display:flex;gap:5px"></div>
                 </div>
             </div>
         </section>
 
         <!-- REPORTES -->
         <section class="tab" id="tab-reportes">
-            <div class="grid-2">
-                <div class="card">
-                    <div class="card-title">
-                        <h3>Generación de Reportes</h3>
-                    </div>
-                    <p style="font-size:12px;color:var(--muted);margin-bottom:18px">
-                        Utiliza las opciones disponibles para exportar la información procesada.
-                    </p>
-                    <div style="display:flex;flex-wrap:wrap;gap:10px">
-                        <button class="btn btn-blue" onclick="exportCurrentData()">
-                            <i data-lucide="file-spreadsheet"></i> Exportar Excel
-                        </button>
-                        <button class="btn btn-red" onclick="printReport()">
-                            <i data-lucide="printer"></i> Imprimir reporte
-                        </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-title">
-                        <h3>Estado de información</h3>
-                    </div>
-                    <div id="reportStatus">No hay información cargada.</div>
-                </div>
+            <div class="card">
+                <div class="card-title"><h3>Generación de Reportes</h3></div>
+                <button class="btn btn-blue" onclick="exportCurrentData()"><i data-lucide="file-spreadsheet"></i> Exportar Excel</button>
+                <button class="btn btn-red" onclick="window.print()"><i data-lucide="printer"></i> Imprimir</button>
             </div>
         </section>
 
         <!-- CONFIGURACION -->
         <section class="tab" id="tab-configuracion">
             <div class="card">
-                <div class="card-title">
-                    <h3>Apariencia del Sistema</h3>
-                </div>
-                <div class="setting-row">
-                    <div>
-                        <h4 style="font-size:12px">Modo Oscuro / Claro</h4>
-                        <p style="font-size:10px;color:var(--muted)">Cambia la apariencia visual de la plataforma.</p>
-                    </div>
-                    <div class="switch" id="themeToggle" onclick="toggleTheme()"></div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">
-                    <h3>Configuración de datos</h3>
-                </div>
-                <div class="setting-row">
-                    <div>
-                        <h4 style="font-size:12px">Registros por página</h4>
-                        <p style="font-size:10px;color:var(--muted)">Cantidad de registros mostrados en la tabla.</p>
-                    </div>
-                    <select id="pageSize" onchange="changePageSize()" style="background:var(--input);color:var(--text);border:1px solid var(--border);padding:8px;border-radius:7px;">
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100" selected>100</option>
-                        <option value="250">250</option>
-                    </select>
-                </div>
-                <div class="setting-row">
-                    <div>
-                        <h4 style="font-size:12px">Limpiar información</h4>
-                        <p style="font-size:10px;color:var(--muted)">Elimina los datos actualmente cargados.</p>
-                    </div>
-                    <button class="btn btn-red" onclick="clearData()">Limpiar</button>
-                </div>
+                <div class="card-title"><h3>Configuración de datos</h3></div>
+                <button class="btn btn-red" onclick="clearData()">Limpiar Datos</button>
             </div>
         </section>
     </div>
 </main>
 
-<!-- TOAST CONTAINER -->
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-/* =====================================================
-   VARIABLES GLOBALES
-===================================================== */
 let rawData = [];
 let filteredData = [];
 let charts = {};
-
 let currentPage = 1;
 let pageSize = 100;
 
-/* =====================================================
-   LOGIN & LOGOUT
-===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    
+    if(localStorage.getItem("cobranza_session") === "active"){
+        document.getElementById("loginScreen").classList.add("hidden");
+    }
+
+    // Inicializar gráficas vacías para que el contenedor tenga formato
+    initBlankCharts();
+
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const tab = btn.dataset.tab;
+            if(tab) switchTab(tab);
+        });
+    });
+
+    document.getElementById("mobileMenuBtn").addEventListener("click", () => {
+        document.getElementById("sidebar").classList.toggle("open");
+    });
+
+    document.getElementById("excelFile").addEventListener("change", handleFileSelect);
+});
+
 function login(){
     const user = document.getElementById("loginUser").value.trim();
     const password = document.getElementById("loginPassword").value.trim();
@@ -1240,136 +900,84 @@ function logout(){
     location.reload();
 }
 
-/* =====================================================
-   INICIALIZACIÓN Y NAVEGACIÓN
-===================================================== */
-const navButtons = document.querySelectorAll(".nav-btn");
-const tabs = document.querySelectorAll(".tab");
-
-const pageTitles = {
-    inicio: ["Dashboard Ejecutivo", "Centro de control de indicadores de cobranza"],
-    gestores: ["Gestores", "Rendimiento individual de cobranza"],
-    zonas: ["Zonas", "Distribución territorial de resultados"],
-    analisis: ["Análisis", "Análisis operativo y estadístico"],
-    registros: ["Registros", "Detalle de operaciones procesadas"],
-    reportes: ["Reportes", "Generación y exportación de información"],
-    configuracion: ["Configuración", "Preferencias de la plataforma"]
-};
-
-document.addEventListener("DOMContentLoaded", () => {
-    if(localStorage.getItem("cobranza_session") === "active"){
-        document.getElementById("loginScreen").classList.add("hidden");
-    }
-    
-    loadTheme();
-    lucide.createIcons();
-
-    // Eventos de Navegación
-    navButtons.forEach(btn => {
-        btn.addEventListener("click", () => {
-            const tab = btn.dataset.tab;
-            if(tab) switchTab(tab);
-        });
-    });
-
-    // Menú Responsive
-    document.getElementById("mobileMenuBtn").addEventListener("click", () => {
-        document.getElementById("sidebar").classList.toggle("open");
-    });
-
-    // Evento Carga de Archivo
-    document.getElementById("excelFile").addEventListener("change", handleFileSelect);
-});
-
 function switchTab(tabId){
-    navButtons.forEach(btn => {
+    document.querySelectorAll(".nav-btn").forEach(btn => {
         btn.classList.toggle("active", btn.dataset.tab === tabId);
     });
 
-    tabs.forEach(tab => {
+    document.querySelectorAll(".tab").forEach(tab => {
         tab.classList.toggle("active", tab.id === `tab-${tabId}`);
     });
 
-    if(pageTitles[tabId]){
-        document.getElementById("pageTitle").innerText = pageTitles[tabId][0];
-        document.getElementById("pageSubtitle").innerText = pageTitles[tabId][1];
-    }
-    
-    // Cerrar sidebar mobile al seleccionar
     document.getElementById("sidebar").classList.remove("open");
 }
 
-/* =====================================================
-   TEMA (DARK / LIGHT)
-===================================================== */
-function toggleTheme(){
-    const body = document.body;
-    const toggle = document.getElementById("themeToggle");
+function initBlankCharts(){
+    const defaultOptions = { responsive: true, maintainAspectRatio: false };
 
-    body.classList.toggle("light-theme");
-    toggle.classList.toggle("on");
+    const ctx1 = document.getElementById("zoneChart").getContext("2d");
+    charts.zone = new Chart(ctx1, {
+        type: 'doughnut',
+        data: { labels: ['Sin Datos'], datasets: [{ data: [1], backgroundColor: ['#203852'] }] },
+        options: defaultOptions
+    });
 
-    localStorage.setItem("theme", body.classList.contains("light-theme") ? "light" : "dark");
+    const ctx2 = document.getElementById("managerChart").getContext("2d");
+    charts.manager = new Chart(ctx2, {
+        type: 'bar',
+        data: { labels: ['Sin Datos'], datasets: [{ label: 'Cobranza', data: [0], backgroundColor: '#1683ff' }] },
+        options: defaultOptions
+    });
+
+    const ctx3 = document.getElementById("resultChart").getContext("2d");
+    charts.result = new Chart(ctx3, {
+        type: 'pie',
+        data: { labels: ['Cobranza', 'Comisiones'], datasets: [{ data: [0, 0], backgroundColor: ['#16c784', '#ef3340'] }] },
+        options: defaultOptions
+    });
 }
 
-function loadTheme(){
-    const theme = localStorage.getItem("theme");
-    const toggle = document.getElementById("themeToggle");
-
-    if(theme === "light"){
-        document.body.classList.add("light-theme");
-        toggle.classList.add("on");
-    }
-}
-
-/* =====================================================
-   PROCESAMIENTO DE EXCEL (SheetJS)
-===================================================== */
 function handleFileSelect(e){
     const file = e.target.files[0];
     if(!file) return;
 
     document.getElementById("fileName").innerText = file.name;
     document.getElementById("sidebarFile").innerText = file.name;
-    document.getElementById("fileStatus").innerText = "Procesando datos del archivo...";
+    document.getElementById("fileStatus").innerText = "Procesando datos...";
 
     const reader = new FileReader();
     reader.onload = function(evt) {
         try {
             const data = new Uint8Array(evt.target.result);
             const workbook = XLSX.read(data, {type: 'array'});
-            const firstSheet = workbook.SheetNames[0];
-            const json = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheet], {defval: ""});
+            const json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {defval: ""});
 
             processRawData(json);
-            document.getElementById("fileStatus").innerText = `Cargado: ${rawData.length} registros hallados.`;
-            showToast("Archivo cargado con éxito.");
+            document.getElementById("fileStatus").innerText = `Cargado: ${rawData.length} registros.`;
+            showToast("Archivo cargado exitosamente.");
         } catch(err) {
             showToast("Error al leer el archivo Excel.");
-            document.getElementById("fileStatus").innerText = "Error en el formato de archivo.";
         }
     };
     reader.readAsArrayBuffer(file);
 }
 
 function processRawData(data){
-    // Mapeo flexible e inteligibilidad de columnas
     rawData = data.map(item => {
         const getVal = (keys) => {
-            const foundKey = Object.keys(item).find(k => keys.some(key => k.toLowerCase().includes(key)));
-            return foundKey ? item[foundKey] : "";
+            const key = Object.keys(item).find(k => keys.some(k2 => k.toLowerCase().includes(k2)));
+            return key ? item[key] : "";
         };
 
-        const montoStr = String(getVal(["monto", "cobranza", "total", "pago", "importe"])).replace(/[^0-9.-]+/g, "");
+        const montoStr = String(getVal(["monto", "cobranza", "total", "pago"])).replace(/[^0-9.-]+/g, "");
         const comisionStr = String(getVal(["comision", "comisión", "fee"])).replace(/[^0-9.-]+/g, "");
 
         return {
-            cliente: getVal(["cliente", "nombre", "usuario", "id"]) || "S/D",
-            gestor: getVal(["gestor", "agente", "cobrador"]) || "SIN ASIGNAR",
-            zona: getVal(["zona", "region", "región", "territorio"]) || "GENERAL",
+            cliente: getVal(["cliente", "nombre", "usuario"]) || "S/D",
+            gestor: getVal(["gestor", "agente"]) || "SIN ASIGNAR",
+            zona: getVal(["zona", "region"]) || "GENERAL",
             monto: parseFloat(montoStr) || 0,
-            comision: parseFloat(comisionStr) || 0,
-            fecha: getVal(["fecha", "date"]) || ""
+            comision: parseFloat(comisionStr) || 0
         };
     });
 
@@ -1378,204 +986,140 @@ function processRawData(data){
     updateDashboard();
 }
 
-/* =====================================================
-   FILTROS Y BÚSQUEDA
-===================================================== */
 function populateFilters(){
-    const managerSelect = document.getElementById("managerFilter");
-    const zoneSelect = document.getElementById("zoneFilter");
+    const mgrSel = document.getElementById("managerFilter");
+    const znSel = document.getElementById("zoneFilter");
 
     const managers = [...new Set(rawData.map(d => d.gestor))].sort();
     const zones = [...new Set(rawData.map(d => d.zona))].sort();
 
-    managerSelect.innerHTML = '<option value="">Todos los gestores</option>';
-    zoneSelect.innerHTML = '<option value="">Todas las zonas</option>';
+    mgrSel.innerHTML = '<option value="">Todos los gestores</option>';
+    znSel.innerHTML = '<option value="">Todas las zonas</option>';
 
-    managers.forEach(m => managerSelect.innerHTML += `<option value="${m}">${m}</option>`);
-    zones.forEach(z => zoneSelect.innerHTML += `<option value="${z}">${z}</option>`);
+    managers.forEach(m => mgrSel.innerHTML += `<option value="${m}">${m}</option>`);
+    zones.forEach(z => znSel.innerHTML += `<option value="${z}">${z}</option>`);
 }
 
 function applyFilters(){
     const search = document.getElementById("globalSearch").value.toLowerCase();
-    const manager = document.getElementById("managerFilter").value;
-    const zone = document.getElementById("zoneFilter").value;
+    const mgr = document.getElementById("managerFilter").value;
+    const zn = document.getElementById("zoneFilter").value;
 
-    filteredData = rawData.filter(item => {
-        const matchSearch = item.cliente.toLowerCase().includes(search) || 
-                            item.gestor.toLowerCase().includes(search) || 
-                            item.zona.toLowerCase().includes(search);
-        const matchManager = !manager || item.gestor === manager;
-        const matchZone = !zone || item.zona === zone;
-
-        return matchSearch && matchManager && matchZone;
+    filteredData = rawData.filter(i => {
+        const matchSearch = i.cliente.toLowerCase().includes(search) || i.gestor.toLowerCase().includes(search) || i.zona.toLowerCase().includes(search);
+        const matchMgr = !mgr || i.gestor === mgr;
+        const matchZn = !zn || i.zona === zn;
+        return matchSearch && matchMgr && matchZn;
     });
 
     currentPage = 1;
     updateDashboard();
-    showToast(`Filtros aplicados: ${filteredData.length} registros`);
 }
 
 function clearFilters(){
     document.getElementById("globalSearch").value = "";
     document.getElementById("managerFilter").value = "";
     document.getElementById("zoneFilter").value = "";
-    document.getElementById("dateFrom").value = "";
-    document.getElementById("dateTo").value = "";
-
     filteredData = [...rawData];
     currentPage = 1;
     updateDashboard();
 }
 
-/* =====================================================
-   RENDER Y ACTUALIZACIÓN DE INTERFAZ
-===================================================== */
 function updateDashboard(){
     renderKPIs();
     renderCharts();
     renderGestoresTable();
     renderZonesTable();
     renderRecordsTable();
-    renderAnalysisSummary();
 }
 
-function formatMoney(amount){
-    return new Intl.NumberFormat("es-MX", {style: "currency", currency: "MXN"}).format(amount);
+function formatMoney(val){
+    return new Intl.NumberFormat("es-MX", {style: "currency", currency: "MXN"}).format(val);
 }
 
 function renderKPIs(){
     const totalCobranza = filteredData.reduce((acc, i) => acc + i.monto, 0);
     const totalComision = filteredData.reduce((acc, i) => acc + i.comision, 0);
     const totalTx = filteredData.length;
-    const promedio = totalTx > 0 ? totalCobranza / totalTx : 0;
 
     document.getElementById("kpiTotal").innerText = formatMoney(totalCobranza);
     document.getElementById("kpiCommission").innerText = formatMoney(totalComision);
     document.getElementById("kpiTransactions").innerText = totalTx;
-    document.getElementById("kpiAverage").innerText = formatMoney(promedio);
+    document.getElementById("kpiAverage").innerText = formatMoney(totalTx ? totalCobranza / totalTx : 0);
 
     document.getElementById("analysisOperations").innerText = totalTx;
     document.getElementById("analysisManagers").innerText = new Set(filteredData.map(i=>i.gestor)).size;
     document.getElementById("analysisZones").innerText = new Set(filteredData.map(i=>i.zona)).size;
 }
 
-/* =====================================================
-   GRÁFICAS (Chart.js)
-===================================================== */
 function renderCharts(){
-    // Destruir gráficas anteriores
-    if(charts.zone) charts.zone.destroy();
-    if(charts.manager) charts.manager.destroy();
-    if(charts.result) charts.result.destroy();
-
-    // 1. Zona Chart
+    // Zona Chart
     const zonesMap = {};
     filteredData.forEach(i => zonesMap[i.zona] = (zonesMap[i.zona] || 0) + i.monto);
-    
-    const zoneCtx = document.getElementById("zoneChart").getContext("2d");
-    charts.zone = new Chart(zoneCtx, {
-        type: 'doughnut',
-        data: {
-            labels: Object.keys(zonesMap),
-            datasets: [{
-                data: Object.values(zonesMap),
-                backgroundColor: ['#1683ff', '#ef3340', '#16c784', '#f5b942', '#8fa3bb', '#0758bd']
-            }]
-        },
-        options: { responsive: true, maintainAspectRatio: false }
-    });
+    charts.zone.data.labels = Object.keys(zonesMap);
+    charts.zone.data.datasets[0].data = Object.values(zonesMap);
+    charts.zone.data.datasets[0].backgroundColor = ['#1683ff', '#ef3340', '#16c784', '#f5b942', '#8fa3bb'];
+    charts.zone.update();
 
-    // 2. Manager Chart (Top 5)
+    // Manager Chart
     const mgrMap = {};
     filteredData.forEach(i => mgrMap[i.gestor] = (mgrMap[i.gestor] || 0) + i.monto);
-    const topManagers = Object.entries(mgrMap).sort((a,b) => b[1] - a[1]).slice(0, 5);
+    const topMgrs = Object.entries(mgrMap).sort((a,b) => b[1] - a[1]).slice(0, 5);
 
-    const mgrCtx = document.getElementById("managerChart").getContext("2d");
-    charts.manager = new Chart(mgrCtx, {
-        type: 'bar',
-        data: {
-            labels: topManagers.map(m => m[0]),
-            datasets: [{
-                label: 'Cobranza Total',
-                data: topManagers.map(m => m[1]),
-                backgroundColor: '#1683ff',
-                borderRadius: 6
-            }]
-        },
-        options: { responsive: true, maintainAspectRatio: false }
-    });
+    charts.manager.data.labels = topMgrs.map(m => m[0]);
+    charts.manager.data.datasets[0].data = topMgrs.map(m => m[1]);
+    charts.manager.update();
 
-    // 3. Result Chart (Análisis)
-    const resultCtx = document.getElementById("resultChart").getContext("2d");
-    charts.result = new Chart(resultCtx, {
-        type: 'pie',
-        data: {
-            labels: ['Cobranza Líquida', 'Comisiones'],
-            datasets: [{
-                data: [
-                    filteredData.reduce((acc, i) => acc + i.monto, 0),
-                    filteredData.reduce((acc, i) => acc + i.comision, 0)
-                ],
-                backgroundColor: ['#16c784', '#ef3340']
-            }]
-        },
-        options: { responsive: true, maintainAspectRatio: false }
-    });
+    // Result Chart
+    charts.result.data.datasets[0].data = [
+        filteredData.reduce((a, b) => a + b.monto, 0),
+        filteredData.reduce((a, b) => a + b.comision, 0)
+    ];
+    charts.result.update();
 }
 
-/* =====================================================
-   TABLAS Y PAGINACIÓN
-===================================================== */
 function renderGestoresTable(){
     const mgrMap = {};
     filteredData.forEach(i => {
-        if(!mgrMap[i.gestor]){
-            mgrMap[i.gestor] = { ops: 0, total: 0, comision: 0 };
-        }
-        mgrMap[i.gestor].ops += 1;
+        if(!mgrMap[i.gestor]) mgrMap[i.gestor] = { ops: 0, total: 0, comision: 0 };
+        mgrMap[i.gestor].ops++;
         mgrMap[i.gestor].total += i.monto;
         mgrMap[i.gestor].comision += i.comision;
     });
 
     const tbody = document.getElementById("gestoresBody");
     tbody.innerHTML = "";
-
-    Object.entries(mgrMap).forEach(([gestor, d], idx) => {
-        const ticketProm = d.ops > 0 ? d.total / d.ops : 0;
+    Object.entries(mgrMap).forEach(([g, d], idx) => {
         tbody.innerHTML += `
             <tr>
-                <td>${idx + 1}</td>
-                <td><b>${gestor}</b></td>
-                <td><span class="badge badge-blue">${d.ops}</span></td>
+                <td>${idx+1}</td>
+                <td><b>${g}</b></td>
+                <td>${d.ops}</td>
                 <td>${formatMoney(d.total)}</td>
                 <td>${formatMoney(d.comision)}</td>
-                <td>${formatMoney(ticketProm)}</td>
+                <td>${formatMoney(d.ops ? d.total / d.ops : 0)}</td>
             </tr>
         `;
     });
 }
 
 function renderZonesTable(){
-    const zoneMap = {};
+    const znMap = {};
     filteredData.forEach(i => {
-        if(!zoneMap[i.zona]){
-            zoneMap[i.zona] = { ops: 0, total: 0 };
-        }
-        zoneMap[i.zona].ops += 1;
-        zoneMap[i.zona].total += i.monto;
+        if(!znMap[i.zona]) znMap[i.zona] = { ops: 0, total: 0 };
+        znMap[i.zona].ops++;
+        znMap[i.zona].total += i.monto;
     });
 
     const tbody = document.getElementById("zonesBody");
     tbody.innerHTML = "";
-
-    Object.entries(zoneMap).forEach(([zona, d]) => {
-        const ticketProm = d.ops > 0 ? d.total / d.ops : 0;
+    Object.entries(znMap).forEach(([z, d]) => {
         tbody.innerHTML += `
             <tr>
-                <td><b>${zona}</b></td>
-                <td><span class="badge badge-green">${d.ops}</span></td>
+                <td><b>${z}</b></td>
+                <td>${d.ops}</td>
                 <td>${formatMoney(d.total)}</td>
-                <td>${formatMoney(ticketProm)}</td>
+                <td>${formatMoney(d.ops ? d.total / d.ops : 0)}</td>
             </tr>
         `;
     });
@@ -1584,128 +1128,47 @@ function renderZonesTable(){
 function renderRecordsTable(){
     const tbody = document.getElementById("recordsBody");
     tbody.innerHTML = "";
-
     document.getElementById("recordCount").innerText = `${filteredData.length} registros`;
 
     const start = (currentPage - 1) * pageSize;
-    const end = start + pageSize;
-    const pageItems = filteredData.slice(start, end);
+    const pageItems = filteredData.slice(start, start + pageSize);
 
-    pageItems.forEach(item => {
+    pageItems.forEach(i => {
         tbody.innerHTML += `
             <tr>
-                <td>${item.cliente}</td>
-                <td>${item.gestor}</td>
-                <td><span class="badge badge-blue">${item.zona}</span></td>
-                <td>${formatMoney(item.monto)}</td>
-                <td>${formatMoney(item.comision)}</td>
+                <td>${i.cliente}</td>
+                <td>${i.gestor}</td>
+                <td>${i.zona}</td>
+                <td>${formatMoney(i.monto)}</td>
+                <td>${formatMoney(i.comision)}</td>
             </tr>
         `;
     });
-
-    renderPagination();
 }
 
-function renderPagination(){
-    const totalPages = Math.ceil(filteredData.length / pageSize) || 1;
-    document.getElementById("paginationInfo").innerText = `Página ${currentPage} de ${totalPages}`;
-    
-    const container = document.getElementById("paginationButtons");
-    container.innerHTML = "";
-
-    if(currentPage > 1){
-        container.innerHTML += `<button class="page-btn" onclick="goToPage(${currentPage - 1})">Prev</button>`;
-    }
-    container.innerHTML += `<button class="page-btn active">${currentPage}</button>`;
-    if(currentPage < totalPages){
-        container.innerHTML += `<button class="page-btn" onclick="goToPage(${currentPage + 1})">Sig</button>`;
-    }
-}
-
-function goToPage(page){
-    currentPage = page;
-    renderRecordsTable();
-}
-
-function changePageSize(){
-    pageSize = parseInt(document.getElementById("pageSize").value);
-    currentPage = 1;
-    renderRecordsTable();
-}
-
-function renderAnalysisSummary(){
-    const total = filteredData.reduce((acc, i) => acc + i.monto, 0);
-    const summary = document.getElementById("analysisSummary");
-    const reportStatus = document.getElementById("reportStatus");
-
-    if(filteredData.length === 0){
-        summary.innerHTML = "Carga un archivo para generar el análisis.";
-        reportStatus.innerHTML = "No hay información cargada.";
-        return;
-    }
-
-    const html = `
-        <div style="font-size:12px;line-height:1.6;">
-            <p>● <b>Rendimiento Operativo:</b> Se han procesado ${filteredData.length} operaciones.</p>
-            <p>● <b>Recaudación Total:</b> ${formatMoney(total)} capturados.</p>
-            <p>● <b>Eficiencia:</b> ${new Set(filteredData.map(i=>i.gestor)).size} gestores aportando métricas activas.</p>
-        </div>
-    `;
-    summary.innerHTML = html;
-    reportStatus.innerHTML = html;
-}
-
-/* =====================================================
-   EXPORTACIÓN DE DATOS Y UTILIDADES
-===================================================== */
 function exportCurrentData(){
-    if(filteredData.length === 0) return showToast("No hay datos para exportar.");
+    if(!filteredData.length) return showToast("No hay información cargada.");
     const ws = XLSX.utils.json_to_sheet(filteredData);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Registros");
+    XLSX.utils.book_append_sheet(wb, ws, "Datos");
     XLSX.writeFile(wb, "Reporte_Cobranza.xlsx");
-}
-
-function exportManagers(){
-    if(filteredData.length === 0) return showToast("No hay datos para exportar.");
-    switchTab("reportes");
-    exportCurrentData();
-}
-
-function exportZones(){
-    if(filteredData.length === 0) return showToast("No hay datos para exportar.");
-    switchTab("reportes");
-    exportCurrentData();
-}
-
-function printReport(){
-    window.print();
 }
 
 function clearData(){
     rawData = [];
     filteredData = [];
-    document.getElementById("fileName").innerText = "No hay archivo cargado";
-    document.getElementById("sidebarFile").innerText = "Ningún archivo";
-    document.getElementById("fileStatus").innerText = "Carga tu archivo Excel para comenzar";
+    initBlankCharts();
     updateDashboard();
-    showToast("Información eliminada del sistema.");
+    showToast("Datos eliminados.");
 }
 
-function showNotifications(){
-    showToast("No tienes alertas pendientes.");
-}
-
-function showToast(message){
+function showToast(msg){
     const container = document.getElementById("toastContainer");
     const toast = document.createElement("div");
     toast.className = "toast";
-    toast.innerText = message;
+    toast.innerText = msg;
     container.appendChild(toast);
-
-    setTimeout(() => {
-        toast.remove();
-    }, 3000);
+    setTimeout(() => toast.remove(), 3000);
 }
 </script>
 
